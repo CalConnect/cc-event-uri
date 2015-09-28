@@ -5,8 +5,8 @@
 Network Working Group                                  R. Menderico, Ed.
 Internet-Draft                                                 P. Schlup
 Intended status: Informational                            L. Kristiansen
-Expires: February 28, 2016                                        Google
-                                                         August 27, 2015
+Expires: February 2, 2016                                         Google
+                                                             August 2015
 
 
                   Event URI: An URI scheme for events.
@@ -34,7 +34,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 28, 2016.
+   This Internet-Draft will expire on February 2, 2016.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Menderico, et al.       Expires February 28, 2016               [Page 1]
+Menderico, et al.       Expires February 2, 2016                [Page 1]
 
 Internet-Draft                  Event URI                    August 2015
 
@@ -109,7 +109,7 @@ Internet-Draft                  Event URI                    August 2015
 
 
 
-Menderico, et al.       Expires February 28, 2016               [Page 2]
+Menderico, et al.       Expires February 2, 2016                [Page 2]
 
 Internet-Draft                  Event URI                    August 2015
 
@@ -122,16 +122,15 @@ Internet-Draft                  Event URI                    August 2015
    generate a page could be used to assure a link and the text
    information being displayed are synchronized.
 
-2.2.  Current QR code implementations
+2.1.2.  Current QR code implementations
 
    Several QR code readers ([ZXing][i-nigma]) support calendar events to
    be embedded in QR codes, but they have their own custom
    implementation, usually a single VEVENT iCalendar component.  They
    work well on the mobile platform but rely on OS internals
-   [CalendarContract] to add the event to the calendar, and these are
-   usually not implemented by web browsers.
+   [CalendarContract] to add the event to the calendar.
 
-2.3.  hCalendar
+2.1.3.  hCalendar
 
    hCalendar [hCalendar] is a microformat for events that can be used to
    annotate a web page or another document and indicate to readers that
@@ -143,7 +142,7 @@ Internet-Draft                  Event URI                    August 2015
    whole content of a document, they are more appropriate as an
    annotation on a previously structured text.
 
-2.4.  Custom calendar application link
+2.1.4.  Custom calendar application link
 
    Several calendar systems provide URL for event creation
    ([AddThisEvent][GoogleCalendar]).  However, due to lack of standards,
@@ -155,7 +154,7 @@ Internet-Draft                  Event URI                    August 2015
    APIs, making it difficult for a developer that wants to just publish
    a simple event.
 
-3.  Alternative implementations
+2.2.  Alternative implementations
 
    In this section we would like to explore some other possible
    implementations that, although not currently used by the most popular
@@ -165,12 +164,13 @@ Internet-Draft                  Event URI                    August 2015
 
 
 
-Menderico, et al.       Expires February 28, 2016               [Page 3]
+
+Menderico, et al.       Expires February 2, 2016                [Page 3]
 
 Internet-Draft                  Event URI                    August 2015
 
 
-3.1.  text/calendar MIME type and RegisterContentHandler
+2.2.1.  text/calendar MIME type and RegisterContentHandler
 
    One way to use iCal files and avoid downloading it would be
    registering a handler for calendar MIME [RFC6838] types (text/
@@ -182,7 +182,7 @@ Internet-Draft                  Event URI                    August 2015
    far has only been implemented by Mozilla and only supports atom/xml
    MIME type.
 
-3.2.  data URI
+2.2.2.  data URI
 
    Data URIs [RFC2397] can be used to replace an external file in an
    HTML.  One advantage is that it gets embedded into the HTML and
@@ -193,7 +193,7 @@ Internet-Draft                  Event URI                    August 2015
    to be implemented by browsers and QR readers before this approach can
    be used
 
-3.3.  Custom URI scheme
+2.2.3.  Custom URI scheme
 
    A custom URI scheme for events would behave similar to e-mail
    [RFC6068] geo [RFC5870] and other schemes, where the resource
@@ -207,7 +207,7 @@ Internet-Draft                  Event URI                    August 2015
    most Operating Systems and browsers support it and its associated
    APIs.
 
-4.  The event URI scheme
+3.  The event URI scheme
 
    In this section we will propose a custom URI schema that could be
    implemented easily by any calendar application and developers alike,
@@ -221,12 +221,12 @@ Internet-Draft                  Event URI                    August 2015
 
 
 
-Menderico, et al.       Expires February 28, 2016               [Page 4]
+Menderico, et al.       Expires February 2, 2016                [Page 4]
 
 Internet-Draft                  Event URI                    August 2015
 
 
-4.1.  Syntax
+3.1.  Syntax
 
    The event URI scheme syntax is based on both iCalendar [RFC5545] and
    data URI scheme [RFC2397], we intend to make it trivial for people
@@ -234,7 +234,7 @@ Internet-Draft                  Event URI                    August 2015
    consistent with other existing URI formats.  The basic syntax for the
    URI is:
 
-                      event:[base64,] icalendar event
+                             event:[base64,] icalendar event
 
    To be compatible with the generic URI syntax [RFC3986], the whole URI
    needs to follow the percent encoding escaping.  The iCalendar event
@@ -250,15 +250,16 @@ Internet-Draft                  Event URI                    August 2015
       for rules specified in this document that can violate the RFC
       specification
 
-   o  Start / End dates MUST contain timezones, as described in section
-      3.8.2.2 and 3.8.2.4 of RFC 5545 [RFC5545]
+   o  Start and End dates MUST contain timezones, as described in
+      section 3.8.2.2 and 3.8.2.4 of RFC 5545 [RFC5545]
 
    o  Timezones MUST be specified using one of the valid names from the
-      IANA timezone database (tz) [tz].  All calendar applications
-      reading events will recognize these names (see Section 4.2.2 for
-      more details)
+      IANA timezone database (tz) [tz].  Also, VTIMEZONE entries MUST
+      NOT be added to the event URI or to the source files.  All
+      calendar applications reading events will recognize these names
+      (see Section 3.3.2 for more details)
 
-   o  The event MUST contain an UID, as specified by section 3.8.4.7 of
+   o  The event MUST contain a UID, as specified by section 3.8.4.7 of
       RFC 5545 [RFC5545]
 
    o  The VCALENDAR object MAY contain a SOURCE field
@@ -276,8 +277,7 @@ Internet-Draft                  Event URI                    August 2015
 
 
 
-
-Menderico, et al.       Expires February 28, 2016               [Page 5]
+Menderico, et al.       Expires February 2, 2016                [Page 5]
 
 Internet-Draft                  Event URI                    August 2015
 
@@ -289,9 +289,9 @@ Internet-Draft                  Event URI                    August 2015
       [RFC5545] MUST be included to allow for changes to be detected by
       calendar handler applications
 
-4.1.1.  Examples
+3.2.  Examples
 
-4.1.1.1.  Event URI 101 - a simple example
+3.2.1.  Event URI 101 - a simple example
 
    In this first example, we will start with a simple event that follows
    all the recommendations above.  This event starts on March 23rd,
@@ -299,86 +299,88 @@ Internet-Draft                  Event URI                    August 2015
    Eastern Time.  It has been last modified on April 1st, 2015.  From
    these, we have the following icalendar event:
 
-           BEGIN:VCALENDAR
-           BEGIN:VEVENT
-           SUMMARY:James T. Kirk's birthday
-           DTSTART;TZID=US/Eastern:22330322T000000
-           DTEND;TZID=US/Eastern:22330322T235900
-           UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-           LAST-MODIFIED:20150401T000000Z
-           END:VEVENT
-           END:VCALENDAR
+                   BEGIN:VCALENDAR
+                   BEGIN:VEVENT
+                   SUMMARY:James T. Kirk's birthday
+                   DTSTART;TZID=US/Eastern:22330322T000000
+                   DTEND;TZID=US/Eastern:22330322T235900
+                   UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
+                   LAST-MODIFIED:20150401T000000Z
+                   END:VEVENT
+                   END:VCALENDAR
 
    which leads to the event URI:
 
-       event:BEGIN%3AVCALENDAR%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY
-       %3AJames%20T.%20Kirk%27s%20birthday%0D%0ADTSTART%3BTZID%3DUS
-       %2FEastern%3A22330322T000000%0D%0ADTEND%3BTZID%3DUS%2F
-       Eastern%3A22330322T235900%0D%0AUID%3A8726bc91-a168-4c42-
-       9568-a0e7d35724d6%40example.com%0D%0ALAST-MODIFIED%3A
-       20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
+                event:BEGIN%3AVCALENDAR%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY
+                %3AJames%20T.%20Kirk%27s%20birthday%0D%0ADTSTART%3BTZID%3DUS
+                %2FEastern%3A22330322T000000%0D%0ADTEND%3BTZID%3DUS%2F
+                Eastern%3A22330322T235900%0D%0AUID%3A8726bc91-a168-4c42-
+                9568-a0e7d35724d6%40example.com%0D%0ALAST-MODIFIED%3A
+                20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
 
-4.1.1.2.  Base 64 encoding
+3.2.2.  Base 64 encoding
 
    As mentioned before, calendar applications also need to be able to
    interpret base64 versions of the URIs, the example below represents
-   the same event described in Section 4.1.1.1:
+   the same event described in Section 3.2.1:
 
-      event:base64,QkVHSU46VkNBTEVOREFSDQpCRUdJTjpWRVZFTlQNClNVTU1BU
-      lk6SmFtZXMgVC4gS2lyaydzIGJpcnRoZGF5DQpEVFNUQVJUO1RaSUQ9VVMvRWF
-      zdGVybjoyMjMzMDMyMlQwMDAwMDANCkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyM
-      jMzMDMyMlQyMzU5MDANClVJRDo4NzI2YmM5MS1hMTY4LTRjNDItOTU2OC1hMGU
-      3ZDM1NzI0ZDZAZXhhbXBsZS5jb20NCkxBU1QtTU9ESUZJRUQ6MjAxNTA0MDFUM
-      DAwMDAwWg0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg==
+              event:base64,QkVHSU46VkNBTEVOREFSDQpCRUdJTjpWRVZFTlQNClNVTU1BU
+              lk6SmFtZXMgVC4gS2lyaydzIGJpcnRoZGF5DQpEVFNUQVJUO1RaSUQ9VVMvRWF
+              zdGVybjoyMjMzMDMyMlQwMDAwMDANCkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyM
+              jMzMDMyMlQyMzU5MDANClVJRDo4NzI2YmM5MS1hMTY4LTRjNDItOTU2OC1hMGU
+              3ZDM1NzI0ZDZAZXhhbXBsZS5jb20NCkxBU1QtTU9ESUZJRUQ6MjAxNTA0MDFUM
+              DAwMDAwWg0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg==
 
 
 
-Menderico, et al.       Expires February 28, 2016               [Page 6]
+Menderico, et al.       Expires February 2, 2016                [Page 6]
 
 Internet-Draft                  Event URI                    August 2015
 
 
-4.1.1.3.  Source link
+3.2.3.  Source link
 
    A source link should be added if the URI cannot fit all information
    about a given event or for any other reason you believe that an ICS
    file may better suit your needs.  For the same example in
-   Section 4.1.1.1, we can add the source URL 'http://www.example.com/
+   Section 3.2.1, we can add the source URL 'http://www.example.com/
    kirk.ics' and we would obtain the following URIs:
 
-   event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
-   %2Fkirk.ics%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY%3AJames%20T.%20Kirk%27
-   s%20birthday%0D%0ADTSTART%3BTZID%3DUS%2FEastern%3A22330322T000000%0D
-   %0ADTEND%3BTZID%3DUS%2FEastern%3A22330322T235900%0D%0AUID%3Af41cb1b
-   3-e071-425d-a200-5e1384a22758%40example.com%0D%0ALAST-MODIFIED%3A
-   20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
+                event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
+                %2Fkirk.ics%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY%3AJames%20T.%20Kirk%27
+                s%20birthday%0D%0ADTSTART%3BTZID%3DUS%2FEastern%3A22330322T000000%0D
+                %0ADTEND%3BTZID%3DUS%2FEastern%3A22330322T235900%0D%0AUID%3Af41cb1b
+                3-e071-425d-a200-5e1384a22758%40example.com%0D%0ALAST-MODIFIED%3A
+                20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
 
-  event:base64,QkVHSU46VkNBTEVOREFSDQpTT1VSQ0U6aHR0cDovL3d3dy5leGFtcGxlL
-  mNvbS9raXJrLmljcw0KQkVHSU46VkVWRU5UDQpTVU1NQVJZOkphbWVzIFQuIEtpcmsnc
-  yBiaXJ0aGRheQ0KRFRTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAwD
-  QpEVEVORDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMjM1OTAwDQpVSUQ6ZjQxY2Ix
-  YjMtZTA3MS00MjVkLWEyMDAtNWUxMzg0YTIyNzU4QGV4YW1wbGUuY29tDQpMQVNU
-  LU1PRElGSUVEOjIwMTUwNDAxVDAwMDAwMFoNCkVORDpWRVZFTlQNCkVORDpWQ0
-  FMRU5EQVI=
+                event:base64,QkVHSU46VkNBTEVOREFSDQpTT1VSQ0U6aHR0cDovL3d3dy5leGFtcGxlL
+                mNvbS9raXJrLmljcw0KQkVHSU46VkVWRU5UDQpTVU1NQVJZOkphbWVzIFQuIEtpcmsnc
+                yBiaXJ0aGRheQ0KRFRTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAwD
+                QpEVEVORDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMjM1OTAwDQpVSUQ6ZjQxY2Ix
+                YjMtZTA3MS00MjVkLWEyMDAtNWUxMzg0YTIyNzU4QGV4YW1wbGUuY29tDQpMQVNU
+                LU1PRElGSUVEOjIwMTUwNDAxVDAwMDAwMFoNCkVORDpWRVZFTlQNCkVORDpWQ0
+                FMRU5EQVI=
 
    The iCal object in this case would be:
 
-           BEGIN:VCALENDAR
-           SOURCE:http://www.example.com/kirk.ics
-           BEGIN:VEVENT
-           SUMMARY:James T. Kirk's birthday
-           DTSTART;TZID=US/Eastern:22330322T000000
-           DTEND;TZID=US/Eastern:22330322T235900
-           UID:f41cb1b3-e071-425d-a200-5e1384a22758@example.com
-           LAST-MODIFIED:20150401T000000Z
-           END:VEVENT
-           END:VCALENDAR
+                   BEGIN:VCALENDAR
+                   SOURCE:http://www.example.com/kirk.ics
+                   BEGIN:VEVENT
+                   SUMMARY:James T. Kirk's birthday
+                   DTSTART;TZID=US/Eastern:22330322T000000
+                   DTEND;TZID=US/Eastern:22330322T235900
+                   UID:f41cb1b3-e071-425d-a200-5e1384a22758@example.com
+                   LAST-MODIFIED:20150401T000000Z
+                   END:VEVENT
+                   END:VCALENDAR
 
-4.1.1.4.  Recurring instance with fragment identifier
+3.2.4.  Recurring instance with fragment identifier
 
    In this example, we have a recurring event with a fragment
-   identifier, and its corresponding URI.  This shows how versatile this
-   URI scheme can be.
+   identifier, and its corresponding URI.  Note that this is the only
+   way to specify a recurring event, since only one VEVENT is allowed in
+   the URI.  Exceptions and other information related to this recurring
+   event MUST be added to the SOURCE link instead.
 
 
 
@@ -387,99 +389,67 @@ Internet-Draft                  Event URI                    August 2015
 
 
 
-
-
-Menderico, et al.       Expires February 28, 2016               [Page 7]
+Menderico, et al.       Expires February 2, 2016                [Page 7]
 
 Internet-Draft                  Event URI                    August 2015
 
 
-     BEGIN:VCALENDAR
-     SOURCE:http://www.example.com/kirk.ics?recur-id:22330404T000000Z
-     BEGIN:VEVENT
-     SUMMARY:James T. Kirk's special birthday
-     DTSTART;TZID=US/Eastern:22330322T000000
-     DTEND;TZID=US/Eastern:22330322T235900
-     UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-     RECURRENCE-ID;TZID=US/Eastern:22330322T000000
-     LAST-MODIFIED:20150401T000000Z
-     END:VEVENT
-     END:VCALENDAR
+                BEGIN:VCALENDAR
+                SOURCE:http://www.example.com/kirk.ics?recur-id:22330404T000000Z
+                BEGIN:VEVENT
+                SUMMARY:James T. Kirk's special birthday
+                DTSTART;TZID=US/Eastern:22330322T000000
+                DTEND;TZID=US/Eastern:22330322T235900
+                UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
+                RECURRENCE-ID;TZID=US/Eastern:22330322T000000
+                LAST-MODIFIED:20150401T000000Z
+                END:VEVENT
+                END:VCALENDAR
 
-         event:BEGIN%3AVCALENDAR%0ASOURCE%3Ahttp%3A%2F%2Fwww
-         .example.com%2Fkirk.ics%3Frecur-id%3A22330404T000000Z%0A
-         BEGIN%3AVEVENT%0ASUMMARY%3AJames%20T.%20Kirk%27s%20
-         special%20birthday%0ADTSTART%3BTZID%3DUS%2FEastern%3A
-         22330322T000000%0ADTEND%3BTZID%3DUS%2FEastern%3A22
-         330322T235900%0AUID%3A8726bc91-a168-4c42-9568-a0e7
-         d35724d6%40example.com%0ARECURRENCE-ID%3BTZID%3DUS
-         %2FEastern%3A22330322T000000%0ALAST-MODIFIED%3A2015
-         0401T000000Z%0AEND%3AVEVENT%0AEND%3AVCALENDAR%0A
+                event:BEGIN%3AVCALENDAR%0ASOURCE%3Ahttp%3A%2F%2Fwww
+                .example.com%2Fkirk.ics%3Frecur-id%3A22330404T000000Z%0A
+                BEGIN%3AVEVENT%0ASUMMARY%3AJames%20T.%20Kirk%27s%20
+                special%20birthday%0ADTSTART%3BTZID%3DUS%2FEastern%3A
+                22330322T000000%0ADTEND%3BTZID%3DUS%2FEastern%3A22
+                330322T235900%0AUID%3A8726bc91-a168-4c42-9568-a0e7
+                d35724d6%40example.com%0ARECURRENCE-ID%3BTZID%3DUS
+                %2FEastern%3A22330322T000000%0ALAST-MODIFIED%3A2015
+                0401T000000Z%0AEND%3AVEVENT%0AEND%3AVCALENDAR%0A
 
-            event:base64,QkVHSU46VkNBTEVOREFSClNPVVJDRTpodHRwOi
-            8vd3d3LmV4YW1wbGUuY29tL2tpcmsuaWNzP3JlY3VyLWlkOjIy
-            MzMwNDA0VDAwMDAwMFoKQkVHSU46VkVWRU5UClNVTU1BU
-            lk6SmFtZXMgVC4gS2lyaydzIHNwZWNpYWwgYmlydGhkYXkKRF
-            RTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAw
-            CkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyMjMzMDMyMlQyMzU5
-            MDAKVUlEOjg3MjZiYzkxLWExNjgtNGM0Mi05NTY4LWEwZTdkM
-            zU3MjRkNkBleGFtcGxlLmNvbQpSRUNVUlJFTkNFLUlEO1RaSUQ9
-            VVMvRWFzdGVybjoyMjMzMDMyMlQwMDAwMDAKTEFTVC1NT0
-            RJRklFRDoyMDE1MDQwMVQwMDAwMDBaCkVORDpWRVZFTlQ
-            KRU5EOlZDQUxFTkRBUgo=
+                    event:base64,QkVHSU46VkNBTEVOREFSClNPVVJDRTpodHRwOi
+                    8vd3d3LmV4YW1wbGUuY29tL2tpcmsuaWNzP3JlY3VyLWlkOjIy
+                    MzMwNDA0VDAwMDAwMFoKQkVHSU46VkVWRU5UClNVTU1BU
+                    lk6SmFtZXMgVC4gS2lyaydzIHNwZWNpYWwgYmlydGhkYXkKRF
+                    RTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAw
+                    CkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyMjMzMDMyMlQyMzU5
+                    MDAKVUlEOjg3MjZiYzkxLWExNjgtNGM0Mi05NTY4LWEwZTdkM
+                    zU3MjRkNkBleGFtcGxlLmNvbQpSRUNVUlJFTkNFLUlEO1RaSUQ9
+                    VVMvRWFzdGVybjoyMjMzMDMyMlQwMDAwMDAKTEFTVC1NT0
+                    RJRklFRDoyMDE1MDQwMVQwMDAwMDBaCkVORDpWRVZFTlQ
+                    KRU5EOlZDQUxFTkRBUgo=
 
-4.1.1.5.  Recurring event with exceptions
+3.2.5.  QR code examples
 
-   In this example we have a complex event
+   A QR code containing the first example (Section 3.2.1) can be found
+   at https://goo.gl/lQXIwP.  It has been generated using the ZXing
+   barcode generator([ZXing]).
 
+3.3.  Application requirements and best practices
 
-
-
-
-
-
-
-
-
-
-
-
-
-Menderico, et al.       Expires February 28, 2016               [Page 8]
-
-Internet-Draft                  Event URI                    August 2015
-
-
-           BEGIN:VCALENDAR
-           SOURCE:http://www.example.com/kirk.ics
-           BEGIN:VEVENT
-           SUMMARY:James T. Kirk's birthday
-           DTSTART;TZID=US/Eastern:22330322T000000
-           DTEND;TZID=US/Eastern:22330322T235900
-           UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-           RRULE:FREQ=YEARLY
-           LAST-MODIFIED:20150401T000000Z
-           END:VEVENT
-           BEGIN:VEVENT
-           SUMMARY:James T. Kirk is born
-           DTSTART;TZID=US/Eastern:22330322T000000
-           DTEND;TZID=US/Eastern:22330322T235900
-           UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-           RECURRENCE-ID;TZID=US/Eastern:22330322T000000
-           LAST-MODIFIED:20150401T000000Z
-           END:VEVENT
-           END:VCALENDAR
-
-4.1.2.  QR code examples
-
-4.2.  Application requirements and best practices
-
-4.2.1.  Event publisher
+3.3.1.  Event publisher
 
    For event publishers, the following extra requirements must me met:
 
    o  If your entry contains a SOURCE field pointing to an URI, the
       publisher is responsible for keeping the link live and with up-to-
+
+
+
+Menderico, et al.       Expires February 2, 2016                [Page 8]
+
+Internet-Draft                  Event URI                    August 2015
+
+
       date information while the event information is relevant (i.e, the
       link must exist until the event expires).
 
@@ -487,7 +457,7 @@ Internet-Draft                  Event URI                    August 2015
    publishers in regard to UID generation and the LAST-MODIFIED field,
    which are discussed in the following subsections.
 
-4.2.1.1.  UID generation
+3.3.1.1.  UID generation
 
    According to RFC 5545 [RFC5545], every event MUST be published with
    an UID, so calendar applications can detect multiple occurrences of
@@ -497,14 +467,6 @@ Internet-Draft                  Event URI                    August 2015
    system (for instance, a database incremental id, an UUID, or
    something similar) and append the domain name or IP address at the
    end, separating them by an @.
-
-
-
-
-Menderico, et al.       Expires February 28, 2016               [Page 9]
-
-Internet-Draft                  Event URI                    August 2015
-
 
    For example, all these are valid unique ids for domain example.com
    that fit this recommendation and also RFC 5545 [RFC5545]:
@@ -522,7 +484,7 @@ Internet-Draft                  Event URI                    August 2015
       themselves unique, but to conform with the recommendation we also
       appended the domain name.
 
-4.2.2.  Calendar applications requirements
+3.3.2.  Calendar applications requirements
 
    For calendar data handlers, the following set of extra rules apply:
 
@@ -535,6 +497,15 @@ Internet-Draft                  Event URI                    August 2015
       determine that an event has changed so that it can inform the
       user.
 
+
+
+
+
+Menderico, et al.       Expires February 2, 2016                [Page 9]
+
+Internet-Draft                  Event URI                    August 2015
+
+
    o  If a user deletes a previously downloaded event the handler should
       recognize that and ignore the event unless explicitly clicked on.
 
@@ -543,7 +514,7 @@ Internet-Draft                  Event URI                    August 2015
       specified by reference (i.e., their ISO names, according to [tz])
       and any calendar application MUST understand these.
 
-5.  Security and privacy considerations
+4.  Security and privacy considerations
 
    Below are some guidelines applications implementing event URI
    generators and parsers need to follow in order to avoid security and
@@ -553,14 +524,6 @@ Internet-Draft                  Event URI                    August 2015
       user whether he wants to follow the link, since there may be costs
       associated with downloading data and the user may want to perform
       this operation in a different environment.
-
-
-
-
-Menderico, et al.       Expires February 28, 2016              [Page 10]
-
-Internet-Draft                  Event URI                    August 2015
-
 
    o  Calendar applications MAY check a SOURCE link periodically to
       check for changes, but MUST NOT update an event automatically
@@ -574,16 +537,42 @@ Internet-Draft                  Event URI                    August 2015
       Particularly code reading these files should be careful to not get
       exposed to common security bugs like buffer overflows.
 
+   o  A SOURCE link SHOULD not be used only as a tracking mechanism, if
+      a link is provided there should be some extra information being
+      provided by it or at least the possibility that the information
+      will be updated if necessary
+
+   o  A SOURCE link MUST not require a calendar account in any calendar
+      manager, and MUST NOT represent any form of event subscription by
+      a particular system.  Any event subscription action REQUIRES user
+      acknowledgement and approval before being performed.
+
    o  Note that there is no hard limit on the size of a SOURCE file, but
-      it is expected that these contain a single event, which limits the
-      amount of information is available.  It is best to limit the size
-      of the files you application is trying to download, particularly
-      in mobile environments where there are costs associated with
-      downloading large files.
+      it is expected that these contain information only about a single
+      event (i.e., one VEVENT) or recurring event (several VEVENTS with
+      the same RECURRENCE-ID) This has implications for both writers and
+      readers of these source files:
 
-6.  Future work
 
-   As mentioned in section Section 3.2, the data URI scheme would be a
+
+
+
+Menderico, et al.       Expires February 2, 2016               [Page 10]
+
+Internet-Draft                  Event URI                    August 2015
+
+
+      *  Writers MUST always provided well-formed data that complies to
+         this document and, more generally, to iCalendar format
+         [RFC5545].
+
+      *  Readers can't rely on the size of an input to decide whether it
+         is valid or not, and SHOULD implement parsers that detect
+         inconsistencies.
+
+5.  Future work
+
+   As mentioned in section Section 2.2.2, the data URI scheme would be a
    nice fit for providing an uniform format for specifying events in the
    Web and printed media (QR and other formats), and we have only chosen
    another method because data support is currently limited.
@@ -595,28 +584,19 @@ Internet-Draft                  Event URI                    August 2015
    specified here is compatible with data URI and minimal changes would
    be needed to convert from one format to another.
 
-7.  Acknowledgements
+6.  Acknowledgements
 
    The authors would like to thank the members of CalConnect TC-EVENTPUB
    committee for its contributions to this document, particularly Dave
-   Twellis, Cyrus Daboo and Thomas Schaefer.
+   Thewlis, Cyrus Daboo and Thomas Schaefer.
 
-8.  References
+7.  References
 
    [AddThisEvent]
               AddThisEvent, "AddThisEvent", 2012,
               <http://addthisevent.com>.
 
               Last checked in August 26, 2015
-
-
-
-
-
-Menderico, et al.       Expires February 28, 2016              [Page 11]
-
-Internet-Draft                  Event URI                    August 2015
-
 
    [CalendarContract]
               Google Inc., "Android Calendar Contract", October 2011, <
@@ -629,6 +609,14 @@ Internet-Draft                  Event URI                    August 2015
               Daboo, C., "New Properties for iCalendar", April 2015,
               <https://tools.ietf.org/html/draft-ietf-calext-extensions-
               00>.
+
+
+
+
+Menderico, et al.       Expires February 2, 2016               [Page 11]
+
+Internet-Draft                  Event URI                    August 2015
+
 
               Last checked in August 26, 2015
 
@@ -666,14 +654,6 @@ Internet-Draft                  Event URI                    August 2015
               5545, DOI 10.17487/RFC5545, September 2009,
               <http://www.rfc-editor.org/info/rfc5545>.
 
-
-
-
-Menderico, et al.       Expires February 28, 2016              [Page 12]
-
-Internet-Draft                  Event URI                    August 2015
-
-
    [RFC5870]  Mayrhofer, A. and C. Spanring, "A Uniform Resource
               Identifier for Geographic Locations ('geo' URI)", RFC
               5870, DOI 10.17487/RFC5870, June 2010,
@@ -686,6 +666,13 @@ Internet-Draft                  Event URI                    August 2015
               Specifications and Registration Procedures", BCP 13, RFC
               6838, DOI 10.17487/RFC6838, January 2013,
               <http://www.rfc-editor.org/info/rfc6838>.
+
+
+
+Menderico, et al.       Expires February 2, 2016               [Page 12]
+
+Internet-Draft                  Event URI                    August 2015
+
 
    [tz]       IANA, "Time Zone Database", 1986, <https://www.iana.org/
               time-zones>.
@@ -718,19 +705,7 @@ Authors' Addresses
    URI:   http://www.google.com/
 
 
-
-
-
-
-
-
-
-Menderico, et al.       Expires February 28, 2016              [Page 13]
-
-Internet-Draft                  Event URI                    August 2015
-
-
-   Lucia Kristiansen
+   Lucia Fedorova Kristiansen
    Google Inc.
    Brandschenkestrasse 110
    Zurich, ZH  8002
@@ -750,35 +725,4 @@ Internet-Draft                  Event URI                    August 2015
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Menderico, et al.       Expires February 28, 2016              [Page 14]
+Menderico, et al.       Expires February 2, 2016               [Page 13]

@@ -37,8 +37,8 @@
 	<uri>http://www.google.com/</uri>
       </address>
     </author>
-    <author initials="L." surname="Kristiansen"
-            fullname="Lucia Kristiansen">
+    <author initials="L. F." surname="Kristiansen"
+            fullname="Lucia Fedorova Kristiansen">
       <organization abbrev="Google">
 	Google Inc.
       </organization>
@@ -138,106 +138,106 @@
 	    information being displayed are synchronized.
 	  </t>
 	</section>
+	<section anchor="section.qr_readers"
+		 title="Current QR code implementations">
+	  <t>
+	    Several QR code readers (<xref target="ZXing"/><xref
+	    target="i-nigma"/>) support calendar events to be embedded
+	    in QR codes, but they have their own custom implementation,
+	    usually a single VEVENT iCalendar component. They work well
+	    on the mobile platform but rely on OS internals <xref
+	    target="CalendarContract"/> to add the event to the
+	    calendar.
+	  </t>
+	</section>
+	<section anchor="section.hcalendar" title="hCalendar">
+	  <t>
+	    hCalendar <xref target="hCalendar"/> is a microformat for
+	    events that can be used to annotate a web page or another
+	    document and indicate to readers that an event is
+	    present. While microformats are useful for parsing, they are
+	    not as easy as clicking on a link to add an event and
+	    usually require some complex interaction between the website
+	    and the calendar application to get it right. This also
+	    makes it not ideal for QR scanning, since the annotations
+	    were not designed to represent the whole content of a
+	    document, they are more appropriate as an annotation on a
+	    previously structured text.
+	  </t>
+	</section>
+	<section anchor="section.custom_link"
+		 title="Custom calendar application link">
+	  <t>
+	    Several calendar systems provide URL for event creation
+	    (<xref target="AddThisEvent"/><xref
+	    target="GoogleCalendar"/>). However, due to lack of
+	    standards, applications must implement and link to these
+	    separately. For a web site owner it means implementing all
+	    custom links individually and presenting them to the
+	    users. The users then needs to choose the one that will work
+	    for their calendar application. This consumes precious space
+	    on the page and requires understanding of several APIs,
+	    making it difficult for a developer that wants to just
+	    publish a simple event.
+	  </t>
+	</section>
       </section>
-      <section anchor="section.qr_readers"
-	       title="Current QR code implementations">
+      <section anchor="section.possible_impls"
+	       title="Alternative implementations">
 	<t>
-	  Several QR code readers (<xref target="ZXing"/><xref
-	  target="i-nigma"/>) support calendar events to be embedded
-	  in QR codes, but they have their own custom implementation,
-	  usually a single VEVENT iCalendar component. They work well
-	  on the mobile platform but rely on OS internals
-	  <xref target="CalendarContract"/> to add the event to the calendar,
-	  and these are usually not implemented by web browsers.
+	  In this section we would like to explore some other possible
+	  implementations that, although not currently used by the most
+	  popular calendar applications, could theoretically converge
+	  into a standard.  We will talk briefly about the calendar mime
+	  type and RegisterContentHandler, data URI scheme and a custom
+	  URI scheme.
 	</t>
-      </section>
-      <section anchor="section.hcalendar" title="hCalendar">
-	<t>
-	  hCalendar <xref target="hCalendar"/> is a microformat for
-	  events that can be used to annotate a web page or another
-	  document and indicate to readers that an event is
-	  present. While microformats are useful for parsing, they are
-	  not as easy as clicking on a link to add an event and
-	  usually require some complex interaction between the website
-	  and the calendar application to get it right. This also
-	  makes it not ideal for QR scanning, since the annotations
-	  were not designed to represent the whole content of a
-	  document, they are more appropriate as an annotation on a
-	  previously structured text.
-	</t>
-      </section>
-      <section anchor="section.custom_link"
-	       title="Custom calendar application link">
-	<t>
-	  Several calendar systems provide URL for event creation
-	  (<xref target="AddThisEvent"/><xref
-	  target="GoogleCalendar"/>). However, due to lack of
-	  standards, applications must implement and link to these
-	  separately. For a web site owner it means implementing all
-	  custom links individually and presenting them to the
-	  users. The users then needs to choose the one that will work
-	  for their calendar application. This consumes precious space
-	  on the page and requires understanding of several APIs,
-	  making it difficult for a developer that wants to just
-	  publish a simple event.
-	</t>
-      </section>
-    </section>
-    <section anchor="section.possible_impls"
-	     title="Alternative implementations">
-      <t>
-	In this section we would like to explore some other possible
-	implementations that, although not currently used by the most
-	popular calendar applications, could theoretically converge
-	into a standard.  We will talk briefly about the calendar mime
-	type and RegisterContentHandler, data URI scheme and a custom
-	URI scheme.
-      </t>
-      <section anchor="section.mime"
-	       title="text/calendar MIME type and
-		      RegisterContentHandler">
-	<t>
-	  One way to use iCal files and avoid downloading it would be
-	  registering a handler for calendar MIME <xref
-	  target="RFC6838"/> types (text/calendar <xref
-	  target="RFC5545"/>).  Operating Systems know how to handle
-	  mime type properly, and would be able to redirect it to the
-	  right application. Web browsers, on the other hand, still
-	  have limited capability to handle it, the method
-	  RegisterContentHandler [RegisterContentHandler] allows to
-	  send a given mime type file directly to a website, but so
-	  far has only been implemented by Mozilla and only supports
-	  atom/xml MIME type.
-	</t>
-      </section>
-      <section anchor="section.data" title="data URI">
-	<t>
-	  Data URIs <xref target="RFC2397"/> can be used to replace an
-	  external file in an HTML. One advantage is that it gets
-	  embedded into the HTML and removes the need of an external
-	  file, either a real file or emulated.  Unfortunately,
-	  browsers treat these the same way they treat files,
-	  therefore they would still need to be downloaded or properly
-	  redirected to an application, and RegisterContentHandler
-	  would need to be implemented by browsers and QR readers
-	  before this approach can be used
-	</t>
-      </section>
-      <section anchor="section.custom" title="Custom URI scheme">
-	<t>
-	  A  custom URI  scheme  for events  would  behave similar  to
-	  e-mail <xref target="RFC6068"/> geo <xref target="RFC5870"/>
-	  and other  schemes, where the  resource (e-mail, geo,  or in
-	  this case, the  event) is properly identified  and follows a
-	  specified  protocol. An  HTML  page could  publish an  event
-	  using this scheme  (as it would with any  other link format)
-	  or a  print page could embed  it in an 2D-barcode.  The user
-	  would  have  several options  of  handling  it: opening  his
-	  application  of  choice,  or  redirecting  to  a  previously
-	  registered  website  [RegisterProtocolHandler]. Support  for
-	  URI  schemes  is  widespread,  most  Operating  Systems  and
-	  browsers support it and its associated APIs.
-	</t>
+	<section anchor="section.mime"
+		 title="text/calendar MIME type and
+			RegisterContentHandler">
+	  <t>
+	    One way to use iCal files and avoid downloading it would be
+	    registering a handler for calendar MIME <xref
+	    target="RFC6838"/> types (text/calendar <xref
+	    target="RFC5545"/>).  Operating Systems know how to handle
+	    mime type properly, and would be able to redirect it to the
+	    right application. Web browsers, on the other hand, still
+	    have limited capability to handle it, the method
+	    RegisterContentHandler [RegisterContentHandler] allows to
+	    send a given mime type file directly to a website, but so
+	    far has only been implemented by Mozilla and only supports
+	    atom/xml MIME type.
+	  </t>
+	</section>
+	<section anchor="section.data" title="data URI">
+	  <t>
+	    Data URIs <xref target="RFC2397"/> can be used to replace an
+	    external file in an HTML. One advantage is that it gets
+	    embedded into the HTML and removes the need of an external
+	    file, either a real file or emulated.  Unfortunately,
+	    browsers treat these the same way they treat files,
+	    therefore they would still need to be downloaded or properly
+	    redirected to an application, and RegisterContentHandler
+	    would need to be implemented by browsers and QR readers
+	    before this approach can be used
+	  </t>
+	</section>
+	<section anchor="section.custom" title="Custom URI scheme">
+	  <t>
+	    A  custom URI  scheme  for events  would  behave similar  to
+	    e-mail <xref target="RFC6068"/> geo <xref target="RFC5870"/>
+	    and other  schemes, where the  resource (e-mail, geo,  or in
+	    this case, the  event) is properly identified  and follows a
+	    specified  protocol. An  HTML  page could  publish an  event
+	    using this scheme  (as it would with any  other link format)
+	    or a  print page could embed  it in an 2D-barcode.  The user
+	    would  have  several options  of  handling  it: opening  his
+	    application  of  choice,  or  redirecting  to  a  previously
+	    registered  website  [RegisterProtocolHandler]. Support  for
+	    URI  schemes  is  widespread,  most  Operating  Systems  and
+	    browsers support it and its associated APIs.
+	  </t>
+	</section>
       </section>
     </section>
     <section anchor="section.uri" title="The event URI scheme">
@@ -257,7 +257,7 @@
 	  basic syntax for the URI is:
           <figure suppress-title="true">
 	    <artwork align="center">
-event:[base64,] icalendar event
+	      event:[base64,] icalendar event
 	    </artwork>
 	  </figure>
 	  To be compatible with the generic URI syntax <xref
@@ -274,16 +274,17 @@ event:[base64,] icalendar event
 	    <t> MUST be a valid entity as specified by RFC 5545 <xref
 	    target="RFC5545"/>, except for rules specified in this
 	    document that can violate the RFC specification</t>
-	    <t>Start / End dates MUST contain timezones, as described
+	    <t>Start and End dates MUST contain timezones, as described
 	    in section 3.8.2.2 and 3.8.2.4 of RFC 5545 <xref
 	    target="RFC5545"/></t>
 	    <t>Timezones MUST be specified using one of the valid
 	    names from the IANA timezone database (tz) <xref
-	    target="tz"/>. All calendar applications reading events
-	    will recognize these names (see <xref
-	    target="section.calendar_requirements"/> for more
-	    details)</t>
-	    <t>The event MUST contain an UID, as specified by section
+	    target="tz"/>. Also, VTIMEZONE entries MUST NOT be added
+	    to the event URI or to the source files. All calendar
+	    applications reading events will recognize these names
+	    (see <xref target="section.calendar_requirements"/> for
+	    more details)</t>
+	    <t>The event MUST contain a UID, as specified by section
 	    3.8.4.7 of RFC 5545 <xref target="RFC5545"/></t>
 	    <t>The VCALENDAR object MAY contain a SOURCE field
 	    <xref target="CalDavExtensions"/>, pointing to an ICS file that can
@@ -306,189 +307,169 @@ event:[base64,] icalendar event
 	    applications</t>
 	  </list>
 	</t>
-	<section anchor="section.examples" title="Examples">
-	  <section anchor="section.101" title="Event URI 101 - a simple example">
-	    <t>
-	      In this first example, we will start with a simple event
-	      that follows all the recommendations above. This event
-	      starts on March 23rd, 2233, at midnight and finishes at
-	      11:59 PM at the same day, in Eastern Time.  It has been
-	      last modified on April 1st, 2015. From these, we have
-	      the following icalendar event:
-	      <figure suppress-title="true">
-		<artwork align="center">
-BEGIN:VCALENDAR
-BEGIN:VEVENT
-SUMMARY:James T. Kirk's birthday
-DTSTART;TZID=US/Eastern:22330322T000000
-DTEND;TZID=US/Eastern:22330322T235900
-UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-LAST-MODIFIED:20150401T000000Z 
-END:VEVENT
-END:VCALENDAR
-		</artwork>
-	      </figure>
-	      which leads to the event URI:
-	      <figure suppress-title="true">
-		<artwork align="center">
-event:BEGIN%3AVCALENDAR%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY
-%3AJames%20T.%20Kirk%27s%20birthday%0D%0ADTSTART%3BTZID%3DUS
-%2FEastern%3A22330322T000000%0D%0ADTEND%3BTZID%3DUS%2F
-Eastern%3A22330322T235900%0D%0AUID%3A8726bc91-a168-4c42-
-9568-a0e7d35724d6%40example.com%0D%0ALAST-MODIFIED%3A
-20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
-		</artwork>
-	      </figure>
-	    </t>
-	  </section>
-	  <section anchor="section.base64" title="Base 64 encoding">
-	    <t>As mentioned before, calendar applications also need to
-	    be able to interpret base64 versions of the URIs, the
-	    example below represents the same event described
-	    in <xref target="section.101" />:
+      </section>
+      <section anchor="section.examples" title="Examples">
+	<section anchor="section.101" title="Event URI 101 - a simple example">
+	  <t>
+	    In this first example, we will start with a simple event
+	    that follows all the recommendations above. This event
+	    starts on March 23rd, 2233, at midnight and finishes at
+	    11:59 PM at the same day, in Eastern Time.  It has been
+	    last modified on April 1st, 2015. From these, we have
+	    the following icalendar event:
 	    <figure suppress-title="true">
 	      <artwork align="center">
-event:base64,QkVHSU46VkNBTEVOREFSDQpCRUdJTjpWRVZFTlQNClNVTU1BU
-lk6SmFtZXMgVC4gS2lyaydzIGJpcnRoZGF5DQpEVFNUQVJUO1RaSUQ9VVMvRWF
-zdGVybjoyMjMzMDMyMlQwMDAwMDANCkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyM
-jMzMDMyMlQyMzU5MDANClVJRDo4NzI2YmM5MS1hMTY4LTRjNDItOTU2OC1hMGU
-3ZDM1NzI0ZDZAZXhhbXBsZS5jb20NCkxBU1QtTU9ESUZJRUQ6MjAxNTA0MDFUM
-DAwMDAwWg0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg==
+		BEGIN:VCALENDAR
+		BEGIN:VEVENT
+		SUMMARY:James T. Kirk's birthday
+		DTSTART;TZID=US/Eastern:22330322T000000
+		DTEND;TZID=US/Eastern:22330322T235900
+		UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
+		LAST-MODIFIED:20150401T000000Z 
+		END:VEVENT
+		END:VCALENDAR
 	      </artwork>
 	    </figure>
-	    </t>
-	  </section>
-	  <section anchor="section.source" title="Source link">
-	    <t>
-	      A source link should be added if the URI cannot fit all
-	      information about a given event or for any other reason
-	      you believe that an ICS file may better suit your
-	      needs. For the same example in <xref
-	      target="section.101" />, we can add the source URL
-	      ‘http://www.example.com/kirk.ics’ and we would obtain
-	      the following URIs:
-	      <figure suppress-title="true">
-		<artwork align="center">
-event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
-%2Fkirk.ics%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY%3AJames%20T.%20Kirk%27
-s%20birthday%0D%0ADTSTART%3BTZID%3DUS%2FEastern%3A22330322T000000%0D
-%0ADTEND%3BTZID%3DUS%2FEastern%3A22330322T235900%0D%0AUID%3Af41cb1b
-3-e071-425d-a200-5e1384a22758%40example.com%0D%0ALAST-MODIFIED%3A
-20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
-		</artwork>
-	      </figure>
-	      <figure suppress-title="true">
-		<artwork align="center">
-event:base64,QkVHSU46VkNBTEVOREFSDQpTT1VSQ0U6aHR0cDovL3d3dy5leGFtcGxlL
-mNvbS9raXJrLmljcw0KQkVHSU46VkVWRU5UDQpTVU1NQVJZOkphbWVzIFQuIEtpcmsnc
-yBiaXJ0aGRheQ0KRFRTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAwD
-QpEVEVORDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMjM1OTAwDQpVSUQ6ZjQxY2Ix
-YjMtZTA3MS00MjVkLWEyMDAtNWUxMzg0YTIyNzU4QGV4YW1wbGUuY29tDQpMQVNU
-LU1PRElGSUVEOjIwMTUwNDAxVDAwMDAwMFoNCkVORDpWRVZFTlQNCkVORDpWQ0
-FMRU5EQVI=
-		</artwork>
-	      </figure>
-	      The iCal object in this case would be:
-	      <figure suppress-title="true">
-		<artwork align="center">	      
-BEGIN:VCALENDAR
-SOURCE:http://www.example.com/kirk.ics
-BEGIN:VEVENT
-SUMMARY:James T. Kirk's birthday
-DTSTART;TZID=US/Eastern:22330322T000000
-DTEND;TZID=US/Eastern:22330322T235900
-UID:f41cb1b3-e071-425d-a200-5e1384a22758@example.com
-LAST-MODIFIED:20150401T000000Z
-END:VEVENT
-END:VCALENDAR
-		</artwork>
-	      </figure>
-	    </t>
-	  </section>
-	  <section anchor="section.recurring"
-		   title="Recurring instance with fragment
-			  identifier">
-	    <t>
-	      In this example, we have a recurring event with a
-	      fragment identifier, and its corresponding URI. This
-	      shows how versatile this URI scheme can be.
-	      <figure suppress-title="true">
-		<artwork align="center">	
-BEGIN:VCALENDAR
-SOURCE:http://www.example.com/kirk.ics?recur-id:22330404T000000Z
-BEGIN:VEVENT
-SUMMARY:James T. Kirk's special birthday
-DTSTART;TZID=US/Eastern:22330322T000000
-DTEND;TZID=US/Eastern:22330322T235900
-UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-RECURRENCE-ID;TZID=US/Eastern:22330322T000000
-LAST-MODIFIED:20150401T000000Z
-END:VEVENT
-END:VCALENDAR
-		</artwork>
-	      </figure>
-	      <figure suppress-title="true">
-		<artwork align="center">
-event:BEGIN%3AVCALENDAR%0ASOURCE%3Ahttp%3A%2F%2Fwww
-.example.com%2Fkirk.ics%3Frecur-id%3A22330404T000000Z%0A
-BEGIN%3AVEVENT%0ASUMMARY%3AJames%20T.%20Kirk%27s%20
-special%20birthday%0ADTSTART%3BTZID%3DUS%2FEastern%3A
-22330322T000000%0ADTEND%3BTZID%3DUS%2FEastern%3A22
-330322T235900%0AUID%3A8726bc91-a168-4c42-9568-a0e7
-d35724d6%40example.com%0ARECURRENCE-ID%3BTZID%3DUS
-%2FEastern%3A22330322T000000%0ALAST-MODIFIED%3A2015
-0401T000000Z%0AEND%3AVEVENT%0AEND%3AVCALENDAR%0A
-		</artwork>
-	      </figure>
-	      <figure suppress-title="true">
-		<artwork align="center">
-event:base64,QkVHSU46VkNBTEVOREFSClNPVVJDRTpodHRwOi
-8vd3d3LmV4YW1wbGUuY29tL2tpcmsuaWNzP3JlY3VyLWlkOjIy
-MzMwNDA0VDAwMDAwMFoKQkVHSU46VkVWRU5UClNVTU1BU
-lk6SmFtZXMgVC4gS2lyaydzIHNwZWNpYWwgYmlydGhkYXkKRF
-RTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAw
-CkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyMjMzMDMyMlQyMzU5
-MDAKVUlEOjg3MjZiYzkxLWExNjgtNGM0Mi05NTY4LWEwZTdkM
-zU3MjRkNkBleGFtcGxlLmNvbQpSRUNVUlJFTkNFLUlEO1RaSUQ9
-VVMvRWFzdGVybjoyMjMzMDMyMlQwMDAwMDAKTEFTVC1NT0
-RJRklFRDoyMDE1MDQwMVQwMDAwMDBaCkVORDpWRVZFTlQ
-KRU5EOlZDQUxFTkRBUgo=
-		</artwork>
-	      </figure>
-	    </t>
-	  </section>
-	  <section anchor="section.recurring_exceptions"
-		   title="Recurring event with exceptions">
-	    <t>
-	      In this example we have a complex event
-	      <figure suppress-title="true">
-		<artwork align="center">
-BEGIN:VCALENDAR
-SOURCE:http://www.example.com/kirk.ics
-BEGIN:VEVENT
-SUMMARY:James T. Kirk's birthday
-DTSTART;TZID=US/Eastern:22330322T000000
-DTEND;TZID=US/Eastern:22330322T235900
-UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-RRULE:FREQ=YEARLY
-LAST-MODIFIED:20150401T000000Z
-END:VEVENT
-BEGIN:VEVENT
-SUMMARY:James T. Kirk is born
-DTSTART;TZID=US/Eastern:22330322T000000
-DTEND;TZID=US/Eastern:22330322T235900
-UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-RECURRENCE-ID;TZID=US/Eastern:22330322T000000
-LAST-MODIFIED:20150401T000000Z
-END:VEVENT
-END:VCALENDAR
-		</artwork>
-	      </figure>
-	    </t>
-	  </section>
+	    which leads to the event URI:
+	    <figure suppress-title="true">
+	      <artwork align="center">
+		event:BEGIN%3AVCALENDAR%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY
+		%3AJames%20T.%20Kirk%27s%20birthday%0D%0ADTSTART%3BTZID%3DUS
+		%2FEastern%3A22330322T000000%0D%0ADTEND%3BTZID%3DUS%2F
+		Eastern%3A22330322T235900%0D%0AUID%3A8726bc91-a168-4c42-
+		9568-a0e7d35724d6%40example.com%0D%0ALAST-MODIFIED%3A
+		20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
+	      </artwork>
+	    </figure>
+	  </t>
+	</section>
+	<section anchor="section.base64" title="Base 64 encoding">
+	  <t>As mentioned before, calendar applications also need to
+	  be able to interpret base64 versions of the URIs, the
+	  example below represents the same event described
+	  in <xref target="section.101" />:
+	  <figure suppress-title="true">
+	    <artwork align="center">
+	      event:base64,QkVHSU46VkNBTEVOREFSDQpCRUdJTjpWRVZFTlQNClNVTU1BU
+	      lk6SmFtZXMgVC4gS2lyaydzIGJpcnRoZGF5DQpEVFNUQVJUO1RaSUQ9VVMvRWF
+	      zdGVybjoyMjMzMDMyMlQwMDAwMDANCkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyM
+	      jMzMDMyMlQyMzU5MDANClVJRDo4NzI2YmM5MS1hMTY4LTRjNDItOTU2OC1hMGU
+	      3ZDM1NzI0ZDZAZXhhbXBsZS5jb20NCkxBU1QtTU9ESUZJRUQ6MjAxNTA0MDFUM
+	      DAwMDAwWg0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg==
+	    </artwork>
+	  </figure>
+	  </t>
+	</section>
+	<section anchor="section.source" title="Source link">
+	  <t>
+	    A source link should be added if the URI cannot fit all
+	    information about a given event or for any other reason
+	    you believe that an ICS file may better suit your
+	    needs. For the same example in <xref
+	    target="section.101" />, we can add the source URL
+	    ‘http://www.example.com/kirk.ics’ and we would obtain
+	    the following URIs:
+	    <figure suppress-title="true">
+	      <artwork align="center">
+		event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
+		%2Fkirk.ics%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY%3AJames%20T.%20Kirk%27
+		s%20birthday%0D%0ADTSTART%3BTZID%3DUS%2FEastern%3A22330322T000000%0D
+		%0ADTEND%3BTZID%3DUS%2FEastern%3A22330322T235900%0D%0AUID%3Af41cb1b
+		3-e071-425d-a200-5e1384a22758%40example.com%0D%0ALAST-MODIFIED%3A
+		20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
+	      </artwork>
+	    </figure>
+	    <figure suppress-title="true">
+	      <artwork align="center">
+		event:base64,QkVHSU46VkNBTEVOREFSDQpTT1VSQ0U6aHR0cDovL3d3dy5leGFtcGxlL
+		mNvbS9raXJrLmljcw0KQkVHSU46VkVWRU5UDQpTVU1NQVJZOkphbWVzIFQuIEtpcmsnc
+		yBiaXJ0aGRheQ0KRFRTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAwD
+		QpEVEVORDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMjM1OTAwDQpVSUQ6ZjQxY2Ix
+		YjMtZTA3MS00MjVkLWEyMDAtNWUxMzg0YTIyNzU4QGV4YW1wbGUuY29tDQpMQVNU
+		LU1PRElGSUVEOjIwMTUwNDAxVDAwMDAwMFoNCkVORDpWRVZFTlQNCkVORDpWQ0
+		FMRU5EQVI=
+	      </artwork>
+	    </figure>
+	    The iCal object in this case would be:
+	    <figure suppress-title="true">
+	      <artwork align="center">	      
+		BEGIN:VCALENDAR
+		SOURCE:http://www.example.com/kirk.ics
+		BEGIN:VEVENT
+		SUMMARY:James T. Kirk's birthday
+		DTSTART;TZID=US/Eastern:22330322T000000
+		DTEND;TZID=US/Eastern:22330322T235900
+		UID:f41cb1b3-e071-425d-a200-5e1384a22758@example.com
+		LAST-MODIFIED:20150401T000000Z
+		END:VEVENT
+		END:VCALENDAR
+	      </artwork>
+	    </figure>
+	  </t>
+	</section>
+	<section anchor="section.recurring"
+		 title="Recurring instance with fragment
+			identifier">
+	  <t>
+	    In this example, we have a recurring event with a
+	    fragment identifier, and its corresponding URI. Note
+	    that this is the only way to specify a recurring event,
+	    since only one VEVENT is allowed in the URI. Exceptions
+	    and other information related to this recurring event
+	    MUST be added to the SOURCE link instead.
+	    <figure suppress-title="true">
+	      <artwork align="center">	
+		BEGIN:VCALENDAR
+		SOURCE:http://www.example.com/kirk.ics?recur-id:22330404T000000Z
+		BEGIN:VEVENT
+		SUMMARY:James T. Kirk's special birthday
+		DTSTART;TZID=US/Eastern:22330322T000000
+		DTEND;TZID=US/Eastern:22330322T235900
+		UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
+		RECURRENCE-ID;TZID=US/Eastern:22330322T000000
+		LAST-MODIFIED:20150401T000000Z
+		END:VEVENT
+		END:VCALENDAR
+	      </artwork>
+	    </figure>
+	    <figure suppress-title="true">
+	      <artwork align="center">
+		event:BEGIN%3AVCALENDAR%0ASOURCE%3Ahttp%3A%2F%2Fwww
+		.example.com%2Fkirk.ics%3Frecur-id%3A22330404T000000Z%0A
+		BEGIN%3AVEVENT%0ASUMMARY%3AJames%20T.%20Kirk%27s%20
+		special%20birthday%0ADTSTART%3BTZID%3DUS%2FEastern%3A
+		22330322T000000%0ADTEND%3BTZID%3DUS%2FEastern%3A22
+		330322T235900%0AUID%3A8726bc91-a168-4c42-9568-a0e7
+		d35724d6%40example.com%0ARECURRENCE-ID%3BTZID%3DUS
+		%2FEastern%3A22330322T000000%0ALAST-MODIFIED%3A2015
+		0401T000000Z%0AEND%3AVEVENT%0AEND%3AVCALENDAR%0A
+	      </artwork>
+	    </figure>
+	    <figure suppress-title="true">
+	      <artwork align="center">
+		event:base64,QkVHSU46VkNBTEVOREFSClNPVVJDRTpodHRwOi
+		8vd3d3LmV4YW1wbGUuY29tL2tpcmsuaWNzP3JlY3VyLWlkOjIy
+		MzMwNDA0VDAwMDAwMFoKQkVHSU46VkVWRU5UClNVTU1BU
+		lk6SmFtZXMgVC4gS2lyaydzIHNwZWNpYWwgYmlydGhkYXkKRF
+		RTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAw
+		CkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyMjMzMDMyMlQyMzU5
+		MDAKVUlEOjg3MjZiYzkxLWExNjgtNGM0Mi05NTY4LWEwZTdkM
+		zU3MjRkNkBleGFtcGxlLmNvbQpSRUNVUlJFTkNFLUlEO1RaSUQ9
+		VVMvRWFzdGVybjoyMjMzMDMyMlQwMDAwMDAKTEFTVC1NT0
+		RJRklFRDoyMDE1MDQwMVQwMDAwMDBaCkVORDpWRVZFTlQ
+		KRU5EOlZDQUxFTkRBUgo=
+	      </artwork>
+	    </figure>
+	  </t>
 	</section>
 	<section anchor="section.qr_examples" title="QR code
 						     examples">
+	  <t>
+	    A QR code containing the first example (<xref
+	    target="section.101"/>) can be found at
+	    https://goo.gl/lQXIwP. It has been generated using the
+	    ZXing barcode generator(<xref target="ZXing"/>).
+	  </t>
 	</section>
       </section>
       <section anchor="section.requirements"
@@ -496,8 +477,8 @@ END:VCALENDAR
 	<section anchor="section.publisher_requirements"
 		 title="Event publisher">
 	  <t>
-	    For event publishers, the following extra requirements must
-	    me met:
+	    For event publishers, the following extra requirements
+	    must me met:
 	    <list style="symbols">
 	      <t>If your entry contains a SOURCE field pointing to an
 	      URI, the publisher is responsible for keeping the link
@@ -531,15 +512,15 @@ END:VCALENDAR
 	      <t>
 		[1@example.com]: a simple numerical id, useful if you
 		are creating your first event and has no intention to
-		create another or can manage the ids manually.</t>
-		<t> [user-29960401T080000Z-1@example.com]: An UID for an
-		event from user ‘user’ that starts April first, 2996, at
-		8:00 AM, and uses the username and date as keys.</t>
-		<t>[f47935ee-ec5e-4d87-ba26-05e970674a88@example.com]:
-		a UID which uses UUIDs based on RFC 4122 <xref
-		target="RFC4122"/>. Theoretically, UUIDs are
-		themselves unique, but to conform with the
-		recommendation we also appended the domain name.
+	      create another or can manage the ids manually.</t>
+	      <t> [user-29960401T080000Z-1@example.com]: An UID for an
+	      event from user ‘user’ that starts April first, 2996, at
+	      8:00 AM, and uses the username and date as keys.</t>
+	      <t>[f47935ee-ec5e-4d87-ba26-05e970674a88@example.com]:
+	      a UID which uses UUIDs based on RFC 4122 <xref
+	      target="RFC4122"/>. Theoretically, UUIDs are
+	      themselves unique, but to conform with the
+	      recommendation we also appended the domain name.
 	      </t>
 	    </list>
 	    </t>
@@ -596,13 +577,30 @@ END:VCALENDAR
 	  is not taken. Particularly code reading these files should
 	  be careful to not get exposed to common security bugs like
 	  buffer overflows.</t>
+	  <t>A SOURCE link SHOULD not be used only as a tracking
+	  mechanism, if a link is provided there should be some extra
+	  information being provided by it or at least the possibility
+	  that the information will be updated if necessary</t>
+	  <t>A SOURCE link MUST not require a calendar account in any
+	  calendar manager, and MUST NOT represent any form of event
+	  subscription by a particular system. Any event subscription
+	  action REQUIRES user acknowledgement and approval before
+	  being performed.</t>
 	  <t>Note that there is no hard limit on the size of a SOURCE
-	  file, but it is expected that these contain a single event,
-	  which limits the amount of information is available. It is
-	  best to limit the size of the files you application is
-	  trying to download, particularly in mobile environments
-	  where there are costs associated with downloading large
-	  files.</t>
+	  file, but it is expected that these contain information only
+	  about a single event (i.e., one VEVENT) or recurring event
+	  (several VEVENTS with the same RECURRENCE-ID) This has
+	  implications for both writers and readers of these source
+	  files:
+	  <list style="symbols">
+	    <t>Writers MUST always provided well-formed data that
+	    complies to this document and, more generally, to iCalendar
+	    format <xref target="RFC5545"/>.</t>
+	    <t>Readers can't rely on the size of an input to decide
+	    whether it is valid or not, and SHOULD implement parsers
+	    that detect inconsistencies.</t>
+	  </list>
+	  </t>
 	</list>
       </t>
     </section>
@@ -628,13 +626,13 @@ END:VCALENDAR
       <t>
 	The authors would like to thank the members of CalConnect
 	TC-EVENTPUB committee for its contributions to this document,
-	particularly Dave Twellis, Cyrus Daboo and Thomas Schaefer.
+	particularly Dave Thewlis, Cyrus Daboo and Thomas Schaefer.
       </t>
     </section>
   </middle>
   <back>
     <references>
-     <reference anchor="AddThisEvent" target="http://addthisevent.com">
+      <reference anchor="AddThisEvent" target="http://addthisevent.com">
 	<front>
 	  <title>AddThisEvent</title>
 	  <author>
@@ -645,7 +643,7 @@ END:VCALENDAR
 	<annotation>Last checked in August 26, 2015</annotation>
       </reference>
       <reference anchor="CalendarContract" target="
-http://developer.android.com/reference/android/provider/CalendarContract.html">
+						   http://developer.android.com/reference/android/provider/CalendarContract.html">
 	<front>
 	  <title>Android Calendar Contract</title>
 	  <author>
@@ -665,8 +663,8 @@ http://developer.android.com/reference/android/provider/CalendarContract.html">
 	</front>
 	<annotation>Last checked in August 26, 2015</annotation>
       </reference>
-     <reference anchor="GoogleCalendar" target="
-http://calendar.google.com">
+      <reference anchor="GoogleCalendar" target="
+						 http://calendar.google.com">
 	<front>
 	  <title>Google Calendar</title>
 	  <author>
@@ -693,7 +691,7 @@ http://calendar.google.com">
 	<front>
 	  <title>i-nigma</title>
 	  <author>
-	  <organization>3GVision</organization>
+	    <organization>3GVision</organization>
 	  </author>
 	  <date day="26" month="August" year="2015"/>
 	</front>
