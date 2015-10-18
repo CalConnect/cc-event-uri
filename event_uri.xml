@@ -2,8 +2,8 @@
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
 <rfc docName="draft-menderico-event-uri" category="info">
   <front>
-    <title abbrev="Event URI">
-      Event URI: An URI scheme for events.
+    <title abbrev="vevent URI">
+      v-event URI: An URI scheme for events.
     </title>
     <author initials="R.M." surname="Menderico"
             fullname="Raphael M. Menderico" role="editor">
@@ -240,7 +240,7 @@
 	</section>
       </section>
     </section>
-    <section anchor="section.uri" title="The event URI scheme">
+    <section anchor="section.uri" title="The v-event URI scheme">
       <t>
 	In this section we will propose a custom URI schema that could
 	be implemented easily by any calendar application and
@@ -249,7 +249,7 @@
       </t>
       <section anchor="section.syntax" title="Syntax">
 	<t>
-	  The event URI scheme syntax is based on both iCalendar <xref
+	  The v-event URI scheme syntax is based on both iCalendar <xref
 	  target="RFC5545"/> and data URI scheme <xref
 	  target="RFC2397"/>, we intend to make it trivial for people
 	  used to iCalendar syntax to implement this scheme, and also
@@ -257,7 +257,7 @@
 	  basic syntax for the URI is:
           <figure suppress-title="true">
 	    <artwork align="center">
-	      event:[base64,] icalendar event
+	      v-event:[base64,] icalendar event
 	    </artwork>
 	  </figure>
 	  To be compatible with the generic URI syntax <xref
@@ -280,7 +280,7 @@
 	    <t>Timezones MUST be specified using one of the valid
 	    names from the IANA timezone database (tz) <xref
 	    target="tz"/>. Also, VTIMEZONE entries MUST NOT be added
-	    to the event URI or to the source files. All calendar
+	    to the v-event URI or to the source files. All calendar
 	    applications reading events will recognize these names
 	    (see <xref target="section.calendar_requirements"/> for
 	    more details)</t>
@@ -309,7 +309,7 @@
 	</t>
       </section>
       <section anchor="section.examples" title="Examples">
-	<section anchor="section.101" title="Event URI 101 - a simple example">
+	<section anchor="section.101" title="V-Event URI 101 - a simple example">
 	  <t>
 	    In this first example, we will start with a simple event
 	    that follows all the recommendations above. This event
@@ -330,10 +330,10 @@
 		END:VCALENDAR
 	      </artwork>
 	    </figure>
-	    which leads to the event URI:
+	    which leads to the v-event URI:
 	    <figure suppress-title="true">
 	      <artwork align="center">
-		event:BEGIN%3AVCALENDAR%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY
+		v-event:BEGIN%3AVCALENDAR%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY
 		%3AJames%20T.%20Kirk%27s%20birthday%0D%0ADTSTART%3BTZID%3DUS
 		%2FEastern%3A22330322T000000%0D%0ADTEND%3BTZID%3DUS%2F
 		Eastern%3A22330322T235900%0D%0AUID%3A8726bc91-a168-4c42-
@@ -350,7 +350,7 @@
 	  in <xref target="section.101" />:
 	  <figure suppress-title="true">
 	    <artwork align="center">
-	      event:base64,QkVHSU46VkNBTEVOREFSDQpCRUdJTjpWRVZFTlQNClNVTU1BU
+	      v-event:base64,QkVHSU46VkNBTEVOREFSDQpCRUdJTjpWRVZFTlQNClNVTU1BU
 	      lk6SmFtZXMgVC4gS2lyaydzIGJpcnRoZGF5DQpEVFNUQVJUO1RaSUQ9VVMvRWF
 	      zdGVybjoyMjMzMDMyMlQwMDAwMDANCkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyM
 	      jMzMDMyMlQyMzU5MDANClVJRDo4NzI2YmM5MS1hMTY4LTRjNDItOTU2OC1hMGU
@@ -371,7 +371,7 @@
 	    the following URIs:
 	    <figure suppress-title="true">
 	      <artwork align="center">
-		event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
+		v-event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
 		%2Fkirk.ics%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY%3AJames%20T.%20Kirk%27
 		s%20birthday%0D%0ADTSTART%3BTZID%3DUS%2FEastern%3A22330322T000000%0D
 		%0ADTEND%3BTZID%3DUS%2FEastern%3A22330322T235900%0D%0AUID%3Af41cb1b
@@ -381,7 +381,7 @@
 	    </figure>
 	    <figure suppress-title="true">
 	      <artwork align="center">
-		event:base64,QkVHSU46VkNBTEVOREFSDQpTT1VSQ0U6aHR0cDovL3d3dy5leGFtcGxlL
+		v-event:base64,QkVHSU46VkNBTEVOREFSDQpTT1VSQ0U6aHR0cDovL3d3dy5leGFtcGxlL
 		mNvbS9raXJrLmljcw0KQkVHSU46VkVWRU5UDQpTVU1NQVJZOkphbWVzIFQuIEtpcmsnc
 		yBiaXJ0aGRheQ0KRFRTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAwD
 		QpEVEVORDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMjM1OTAwDQpVSUQ6ZjQxY2Ix
@@ -434,7 +434,7 @@
 	    </figure>
 	    <figure suppress-title="true">
 	      <artwork align="center">
-		event:BEGIN%3AVCALENDAR%0ASOURCE%3Ahttp%3A%2F%2Fwww
+		v-event:BEGIN%3AVCALENDAR%0ASOURCE%3Ahttp%3A%2F%2Fwww
 		.example.com%2Fkirk.ics%3Frecur-id%3A22330404T000000Z%0A
 		BEGIN%3AVEVENT%0ASUMMARY%3AJames%20T.%20Kirk%27s%20
 		special%20birthday%0ADTSTART%3BTZID%3DUS%2FEastern%3A
@@ -447,7 +447,7 @@
 	    </figure>
 	    <figure suppress-title="true">
 	      <artwork align="center">
-		event:base64,QkVHSU46VkNBTEVOREFSClNPVVJDRTpodHRwOi
+		v-event:base64,QkVHSU46VkNBTEVOREFSClNPVVJDRTpodHRwOi
 		8vd3d3LmV4YW1wbGUuY29tL2tpcmsuaWNzP3JlY3VyLWlkOjIy
 		MzMwNDA0VDAwMDAwMFoKQkVHSU46VkVWRU5UClNVTU1BU
 		lk6SmFtZXMgVC4gS2lyaydzIHNwZWNpYWwgYmlydGhkYXkKRF
@@ -556,7 +556,7 @@
     </section>
     <section title="Security and privacy considerations">
       <t>
-	Below are some guidelines applications implementing event URI
+	Below are some guidelines applications implementing v-event URI
 	generators and parsers need to follow in order to avoid
 	security and privacy issues.
 	<list style="symbols">
@@ -572,7 +572,7 @@
 	  link, calendar applications SHOULD inform the user and ask
 	  for his consent before performing any change in his
 	  calendar.</t>
-	  <t>Reading an event URI or following a SOURCE link and
+	  <t>Reading an v-event URI or following a SOURCE link and
 	  downloading a file may pose a security thread if some care
 	  is not taken. Particularly code reading these files should
 	  be careful to not get exposed to common security bugs like
@@ -589,7 +589,7 @@
 	  <t>Note that there is no hard limit on the size of a SOURCE
 	  file, but it is expected that these contain information only
 	  about a single event (i.e., one VEVENT) or recurring event
-	  (several VEVENTS with the same RECURRENCE-ID) This has
+	  (several VEVENTs with the same RECURRENCE-ID) This has
 	  implications for both writers and readers of these source
 	  files:
 	  <list style="symbols">
@@ -804,7 +804,7 @@
 	    <t>
 	      This document defines the iCalendar data format for
 	      representing and exchanging calendaring and scheduling
-	      information such as events, to-dos, journal entries, and
+	      information such as eventns, to-dos, journal entries, and
 	      free/busy information, independent of any particular
 	      calendar service or protocol. [STANDARDS-TRACK]
 	    </t>
