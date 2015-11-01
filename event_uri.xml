@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<rfc docName="draft-menderico-event-uri" category="info">
+<rfc docName="draft-menderico-v-event-uri" category="info">
   <front>
-    <title abbrev="vevent URI">
+    <title abbrev="v-event URI">
       v-event URI: An URI scheme for events.
     </title>
     <author initials="R.M." surname="Menderico"
@@ -53,7 +53,7 @@
 	<uri>http://www.google.com/</uri>
       </address>
     </author>
-    <date month="August" year="2015"/>
+    <date day="02" month="November" year="2015"/>
     <area>Internet</area>
     <keyword>Calendar</keyword>
     <keyword>iCal</keyword>
@@ -306,6 +306,29 @@
 	    allow for changes to be detected by calendar handler
 	    applications</t>
 	  </list>
+	</t>
+      </section>
+      <section anchor="section.registration" title="URI Registration">
+	<t>The v-event URI will be registered with IANA as a
+	provisional scheme, to allow all calendar applications to use
+	it. The authors are not pursuing a permanent registration
+	because they believe that this scheme may be deprecated in the
+	future in favor of a DATA URI scheme, when browser
+	implementations support that scheme with the same level
+	regular URIs are supported.</t>
+	<t>The following are the fields required by RFC 7595 <xref
+	target="RFC7595"/>
+	<list style="symbols">
+	  <t>Scheme name: v-event</t>
+	  <t>Status: provisional</t>
+	  <t>Applications/protocols that use this scheme name:
+	  Hypertext (for example, web pages, e-mail. QR code readers),
+	  calendar applications.</t>
+	  <t>Contact: Raphael Menderico (menderico@google.com)</t>
+	  <t>Change Controller: CalConnect <xref
+	  target="CalConnect"/></t>
+	  <t>References: this document, plus references in it</t>
+	</list>
 	</t>
       </section>
       <section anchor="section.examples" title="Examples">
@@ -642,6 +665,16 @@
 	</front>
 	<annotation>Last checked in August 26, 2015</annotation>
       </reference>
+     <reference anchor="CalConnect" target="http://calconnect.org">
+	<front>
+	  <title>CalConnect: The Calendaring and Scheduling Consortium</title>
+	  <author>
+	    <organization>CalConnect</organization>
+	  </author>
+	  <date month="January" year="2004"/>
+	</front>
+	<annotation>Last checked in November 1, 2015</annotation>
+      </reference>
       <reference anchor="CalendarContract" target="
 						   http://developer.android.com/reference/android/provider/CalendarContract.html">
 	<front>
@@ -907,6 +940,34 @@
 	  <date year="1986"/>
 	</front>
 	<annotation>Last checked in August 27, 2015</annotation>
+      </reference>
+      <reference anchor="RFC7595" target="http://www.rfc-editor.org/info/rfc7595">
+	<front>
+	  <title>
+	    Guidelines and Registration Procedures for URI Schemes
+	  </title>
+	  <author initials="D." surname="Thaler" fullname="D. Thaler" role="editor">
+	    <organization/>
+	  </author>
+	  <author initials="T." surname="Hansen" fullname="T. Hansen">
+	    <organization/>
+	  </author>
+	  <author initials="T." surname="Hardie" fullname="T. Hardie">
+	    <organization/>
+	  </author>
+	  <date year="2015" month="June"/>
+	  <abstract>
+	    <t>
+	      This document updates the guidelines and
+	      recommendations, as well as the IANA registration
+	      processes, for the definition of Uniform Resource
+	      Identifier (URI) schemes. It obsoletes RFC 4395.
+	    </t>
+	  </abstract>
+	</front>
+	<seriesInfo name="BCP" value="35"/>
+	<seriesInfo name="RFC" value="7595"/>
+	<seriesInfo name="DOI" value="10.17487/RFC7595"/>
       </reference>
       <reference anchor="ZXing">
 	<front>
