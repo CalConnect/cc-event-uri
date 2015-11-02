@@ -87,12 +87,12 @@ Internet-Draft                 v-event URI                 November 2015
 2.1.1.  Publish a link to an iCalendar file
 
    A simple way to publish an event is write the event information into
-   an iCalendar [RFC5545] file and provide a link to an user for
-   download it.  In an ideal world, a user would click on the link
+   an iCalendar [RFC5545] file and provide a link to the user for
+   downloading it.  In an ideal world, a user would click on the link
    pointing to a file, the browser would recognize this link as a
    calendar file and redirect it to the proper calendar application,
-   which would display the event information to the user, let him do
-   simple edit actions, and save it to the calendar.
+   which would display the event information to the user, allowing
+   simple edit actions, and saving it to the calendar.
 
    Unfortunately, there are some roadblocks.  Browsers may not recognize
    ICS files and calendar apps may not be registered to handle them.
@@ -100,12 +100,12 @@ Internet-Draft                 v-event URI                 November 2015
    operating system they can either click on the file and get it handed
    over to their calendar app or they need to go to their calendar app
    and manually import the event.  Downloading files also means we need
-   proper support from the hosting entity, and sometimes this is either
-   simply not available (for instance, some CMS hosts do not have in-
-   place support for special types of files) or require special plug-
-   ins.
+   support from the hosting entity, and sometimes this is either simply
+   not available (for instance, some CMS hosts do not have in-place
+   support for special types of files) or require special plug-ins.
 
-
+   The last problem we will mention is about coupling of the file and
+   the entity it represents.  Currently the user needs to keep the event
 
 
 
@@ -114,8 +114,6 @@ Menderico, et al.          Expires May 5, 2016                  [Page 2]
 Internet-Draft                 v-event URI                 November 2015
 
 
-   The last problem we will mention is about coupling of the file and
-   the entity it represents.  Currently the user needs to keep the event
    file and all the links and descriptions in the links about in sync
    (containing the same information).  It would be preferable to have
    this information close together.  Ideally the same tools used to
@@ -135,11 +133,11 @@ Internet-Draft                 v-event URI                 November 2015
    hCalendar [hCalendar] is a microformat for events that can be used to
    annotate a web page or another document and indicate to readers that
    an event is present.  While microformats are useful for parsing, they
-   are not as easy as clicking on a link to add an event and usually
-   require some complex interaction between the website and the calendar
+   are not as easy as clicking on a link to add an event.  They usually
+   require a complex interaction between the website and the calendar
    application to get it right.  This also makes it not ideal for QR
    scanning, since the annotations were not designed to represent the
-   whole content of a document, they are more appropriate as an
+   whole content of a document.  They are more appropriate as an
    annotation on a previously structured text.
 
 2.1.4.  Custom calendar application link
@@ -159,8 +157,10 @@ Internet-Draft                 v-event URI                 November 2015
    In this section we would like to explore some other possible
    implementations that, although not currently used by the most popular
    calendar applications, could theoretically converge into a standard.
-   We will talk briefly about the calendar mime type and
+   We will talk briefly about the calendar mime type in combination with
    RegisterContentHandler, data URI scheme and a custom URI scheme.
+
+
 
 
 
@@ -170,14 +170,15 @@ Menderico, et al.          Expires May 5, 2016                  [Page 3]
 Internet-Draft                 v-event URI                 November 2015
 
 
-2.2.1.  text/calendar MIME type and RegisterContentHandler
+2.2.1.  text/calendar MIME type in combination with
+        RegisterContentHandler
 
    One way to use iCal files and avoid downloading it would be
    registering a handler for calendar MIME [RFC6838] types (text/
    calendar [RFC5545]).  Operating Systems know how to handle mime type
-   properly, and would be able to redirect it to the right application.
-   Web browsers, on the other hand, still have limited capability to
-   handle it, the method RegisterContentHandler [RegisterContentHandler]
+   properly, and are able to redirect it to the right application.  Web
+   browsers, on the other hand, still have limited capability to handle
+   it.  The method RegisterContentHandler [RegisterContentHandler]
    allows to send a given mime type file directly to a website, but so
    far has only been implemented by Mozilla and only supports atom/xml
    MIME type.
@@ -191,7 +192,7 @@ Internet-Draft                 v-event URI                 November 2015
    therefore they would still need to be downloaded or properly
    redirected to an application, and RegisterContentHandler would need
    to be implemented by browsers and QR readers before this approach can
-   be used
+   be used.
 
 2.2.3.  Custom URI scheme
 
@@ -210,10 +211,9 @@ Internet-Draft                 v-event URI                 November 2015
 3.  The v-event URI scheme
 
    In this section we will propose a custom URI schema that could be
-   implemented easily by any calendar application and developers alike,
-   discuss some of its special requirements and last provide some
-   examples
-
+   implemented easily by any calendar application and developers alike.
+   We will also discuss some of its special requirements and provide
+   several examples
 
 
 
@@ -238,7 +238,7 @@ Internet-Draft                 v-event URI                 November 2015
 
    To be compatible with the generic URI syntax [RFC3986], the whole URI
    needs to follow the percent encoding escaping.  The iCalendar event
-   can be either written as a escaped text or, if base64 is specified,
+   can be either written as an escaped text or, if base64 is specified,
    converted to base64.  Calendar applications MUST recognize both
    formats to be compliant with this URI scheme For the iCalendar the
    following restrictions apply:
@@ -250,8 +250,8 @@ Internet-Draft                 v-event URI                 November 2015
       for rules specified in this document that can violate the RFC
       specification
 
-   o  Start and End dates MUST contain timezones, as described in
-      section 3.8.2.2 and 3.8.2.4 of RFC 5545 [RFC5545]
+   o  Start and End dates MUST contain timezone through the TZID param,
+      as described in section 3.8.2.2 and 3.8.2.4 of RFC 5545 [RFC5545]
 
    o  Timezones MUST be specified using one of the valid names from the
       IANA timezone database (tz) [tz].  Also, VTIMEZONE entries MUST
@@ -266,14 +266,14 @@ Internet-Draft                 v-event URI                 November 2015
       [CalDavExtensions], pointing to an ICS file that can contain extra
       information about the event contained in the calendar.  If the
       source file and the entry contradict each other, the information
-      presented in the source MUST prevail.  If a source is available,
+      presented in the source MUST prevail.  If the source is available,
       the event contained in the source file MUST have the same UID as
       the event expressed by the URI
 
-   o  It MUST fit in the medium you're choosing to transmit it, For
-      reference, URIs larger than 2048 characters are known to not work
-      properly on all browsers, and QR codes have a hard limit of 2953
-      characters in its most permissive encoding.  In practice, we
+   o  The URI size MUST fit in the medium you're choosing to transmit
+      it, For reference, URIs larger than 2048 characters are known to
+      not work properly on all browsers, and QR codes have a hard limit
+      of 2953 characters in its most permissive encoding.  In practice,
 
 
 
@@ -282,8 +282,9 @@ Menderico, et al.          Expires May 5, 2016                  [Page 5]
 Internet-Draft                 v-event URI                 November 2015
 
 
-      recommend limiting the URI to 1024 characters and our tests have
-      shown 500 characters are usually enough for most common scenarios.
+      we recommend limiting the URI to 1024 characters and our tests
+      have shown 500 characters are usually enough for most common
+      scenarios.
 
    o  LAST-MODIFIED field, as specified by section 3.8.7.3 of RFC 5545
       [RFC5545] MUST be included to allow for changes to be detected by
@@ -323,7 +324,6 @@ Internet-Draft                 v-event URI                 November 2015
    2233, at midnight and finishes at 11:59 PM at the same day, in
    Eastern Time.  It has been last modified on April 1st, 2015.  From
    these, we have the following icalendar event:
-
 
 
 
@@ -415,64 +415,7 @@ Internet-Draft                 v-event URI                 November 2015
                    END:VEVENT
                    END:VCALENDAR
 
-3.3.4.  Recurring instance with fragment identifier
-
-   In this example, we have a recurring event with a fragment
-   identifier, and its corresponding URI.  Note that this is the only
-   way to specify a recurring event, since only one VEVENT is allowed in
-   the URI.  Exceptions and other information related to this recurring
-   event MUST be added to the SOURCE link instead.
-
-                BEGIN:VCALENDAR
-                SOURCE:http://www.example.com/kirk.ics?recur-id:22330404T000000Z
-                BEGIN:VEVENT
-                SUMMARY:James T. Kirk's special birthday
-                DTSTART;TZID=US/Eastern:22330322T000000
-                DTEND;TZID=US/Eastern:22330322T235900
-                UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-                RECURRENCE-ID;TZID=US/Eastern:22330322T000000
-                LAST-MODIFIED:20150401T000000Z
-                END:VEVENT
-                END:VCALENDAR
-
-
-
-
-
-
-
-
-
-
-
-Menderico, et al.          Expires May 5, 2016                  [Page 8]
-
-Internet-Draft                 v-event URI                 November 2015
-
-
-                v-event:BEGIN%3AVCALENDAR%0ASOURCE%3Ahttp%3A%2F%2Fwww
-                .example.com%2Fkirk.ics%3Frecur-id%3A22330404T000000Z%0A
-                BEGIN%3AVEVENT%0ASUMMARY%3AJames%20T.%20Kirk%27s%20
-                special%20birthday%0ADTSTART%3BTZID%3DUS%2FEastern%3A
-                22330322T000000%0ADTEND%3BTZID%3DUS%2FEastern%3A22
-                330322T235900%0AUID%3A8726bc91-a168-4c42-9568-a0e7
-                d35724d6%40example.com%0ARECURRENCE-ID%3BTZID%3DUS
-                %2FEastern%3A22330322T000000%0ALAST-MODIFIED%3A2015
-                0401T000000Z%0AEND%3AVEVENT%0AEND%3AVCALENDAR%0A
-
-                   v-event:base64,QkVHSU46VkNBTEVOREFSClNPVVJDRTpodHRwOi
-                   8vd3d3LmV4YW1wbGUuY29tL2tpcmsuaWNzP3JlY3VyLWlkOjIy
-                   MzMwNDA0VDAwMDAwMFoKQkVHSU46VkVWRU5UClNVTU1BU
-                   lk6SmFtZXMgVC4gS2lyaydzIHNwZWNpYWwgYmlydGhkYXkKRF
-                   RTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAw
-                   CkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyMjMzMDMyMlQyMzU5
-                   MDAKVUlEOjg3MjZiYzkxLWExNjgtNGM0Mi05NTY4LWEwZTdkM
-                   zU3MjRkNkBleGFtcGxlLmNvbQpSRUNVUlJFTkNFLUlEO1RaSUQ9
-                   VVMvRWFzdGVybjoyMjMzMDMyMlQwMDAwMDAKTEFTVC1NT0
-                   RJRklFRDoyMDE1MDQwMVQwMDAwMDBaCkVORDpWRVZFTlQ
-                   KRU5EOlZDQUxFTkRBUgo=
-
-3.3.5.  QR code examples
+3.3.4.  QR code examples
 
    A QR code containing the first example (Section 3.3.1) can be found
    at https://goo.gl/lQXIwP.  It has been generated using the ZXing
@@ -498,15 +441,15 @@ Internet-Draft                 v-event URI                 November 2015
    According to RFC 5545 [RFC5545], every event MUST be published with
    an UID, so calendar applications can detect multiple occurrences of
    it and remove them.  The UID MUST be a globally unique identifier,
+   and the system generating the event must guarantee it is unique.  The
 
 
 
-Menderico, et al.          Expires May 5, 2016                  [Page 9]
+Menderico, et al.          Expires May 5, 2016                  [Page 8]
 
 Internet-Draft                 v-event URI                 November 2015
 
 
-   and the system generating the event must guarantee it is unique.  The
    recommended way is to generate an id that is internal to a given
    system (for instance, a database incremental id, an UUID, or
    something similar) and append the domain name or IP address at the
@@ -533,8 +476,8 @@ Internet-Draft                 v-event URI                 November 2015
    For calendar data handlers, the following set of extra rules apply:
 
    o  An event MUST only be handled by a calendar application after an
-      user performed an action, like clicking on a link or scanning a QR
-      code.  Events published using the URI SHOULD NOT be added
+      user performed an action, such as clicking on a link or scanning a
+      QR code.  Events published using the URI SHOULD NOT be added
       automatically.
 
    o  Calendar data handlers MUST retain sufficient information to
@@ -557,13 +500,14 @@ Internet-Draft                 v-event URI                 November 2015
 
 
 
-Menderico, et al.          Expires May 5, 2016                 [Page 10]
+
+Menderico, et al.          Expires May 5, 2016                  [Page 9]
 
 Internet-Draft                 v-event URI                 November 2015
 
 
    o  Whenever a SOURCE link is available, the application MUST ask the
-      user whether he wants to follow the link, since there may be costs
+      user whether to follow the link, since there may be costs
       associated with downloading data and the user may want to perform
       this operation in a different environment.
 
@@ -575,7 +519,7 @@ Internet-Draft                 v-event URI                 November 2015
       change in his calendar.
 
    o  Reading an v-event URI or following a SOURCE link and downloading
-      a file may pose a security thread if some care is not taken.
+      a file may pose a security thread if not carefully handled.
       Particularly code reading these files should be careful to not get
       exposed to common security bugs like buffer overflows.
 
@@ -613,7 +557,7 @@ Internet-Draft                 v-event URI                 November 2015
 
 
 
-Menderico, et al.          Expires May 5, 2016                 [Page 11]
+Menderico, et al.          Expires May 5, 2016                 [Page 10]
 
 Internet-Draft                 v-event URI                 November 2015
 
@@ -669,7 +613,7 @@ Internet-Draft                 v-event URI                 November 2015
 
 
 
-Menderico, et al.          Expires May 5, 2016                 [Page 12]
+Menderico, et al.          Expires May 5, 2016                 [Page 11]
 
 Internet-Draft                 v-event URI                 November 2015
 
@@ -725,7 +669,7 @@ Internet-Draft                 v-event URI                 November 2015
 
 
 
-Menderico, et al.          Expires May 5, 2016                 [Page 13]
+Menderico, et al.          Expires May 5, 2016                 [Page 12]
 
 Internet-Draft                 v-event URI                 November 2015
 
@@ -741,7 +685,7 @@ Internet-Draft                 v-event URI                 November 2015
 
 Authors' Addresses
 
-   Raphael M. Menderico (editor)
+   Raphael Menderico (editor)
    Google Inc.
    Brandschenkestrasse 110
    Zurich, ZH  8002
@@ -761,7 +705,7 @@ Authors' Addresses
    URI:   http://www.google.com/
 
 
-   Lucia Fedorova Kristiansen
+   Lucia Kristiansen
    Google Inc.
    Brandschenkestrasse 110
    Zurich, ZH  8002
@@ -781,4 +725,4 @@ Authors' Addresses
 
 
 
-Menderico, et al.          Expires May 5, 2016                 [Page 14]
+Menderico, et al.          Expires May 5, 2016                 [Page 13]

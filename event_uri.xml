@@ -5,8 +5,8 @@
     <title abbrev="v-event URI">
       v-event URI: An URI scheme for events.
     </title>
-    <author initials="R.M." surname="Menderico"
-            fullname="Raphael M. Menderico" role="editor">
+    <author initials="R." surname="Menderico"
+            fullname="Raphael Menderico" role="editor">
       <organization abbrev="Google">
 	Google Inc.
       </organization>
@@ -37,8 +37,8 @@
 	<uri>http://www.google.com/</uri>
       </address>
     </author>
-    <author initials="L. F." surname="Kristiansen"
-            fullname="Lucia Fedorova Kristiansen">
+    <author initials="L." surname="Kristiansen"
+            fullname="Lucia Kristiansen">
       <organization abbrev="Google">
 	Google Inc.
       </organization>
@@ -104,13 +104,13 @@
 	  <t>
 	    A simple way to publish an event is write the event
 	    information into an iCalendar <xref target="RFC5545"/>
-	    file and provide a link to an user for download it. In
-	    an ideal world, a user would click on the link
-	    pointing to a file, the browser would recognize this
-	    link as a calendar file and redirect it to the proper
-	    calendar application, which would display the event
-	    information to the user, let him do simple edit
-	    actions, and save it to the calendar.
+	    file and provide a link to the user for downloading it. In
+	    an ideal world, a user would click on the link pointing to
+	    a file, the browser would recognize this link as a
+	    calendar file and redirect it to the proper calendar
+	    application, which would display the event information to
+	    the user, allowing simple edit actions, and saving it to
+	    the calendar.
 	  </t>
 	  <t>
 	    Unfortunately, there are some roadblocks. Browsers may
@@ -120,7 +120,7 @@
 	    system they can either click on the file and get it
 	    handed over to their calendar app or they need to go
 	    to their calendar app and manually import the
-	    event. Downloading files also means we need proper
+	    event. Downloading files also means we need
 	    support from the hosting entity, and sometimes this is
 	    either simply not available (for instance, some CMS
 	    hosts do not have in-place support for special types
@@ -156,12 +156,12 @@
 	    events that can be used to annotate a web page or another
 	    document and indicate to readers that an event is
 	    present. While microformats are useful for parsing, they are
-	    not as easy as clicking on a link to add an event and
-	    usually require some complex interaction between the website
+	    not as easy as clicking on a link to add an event. They
+	    usually require a complex interaction between the website
 	    and the calendar application to get it right. This also
 	    makes it not ideal for QR scanning, since the annotations
 	    were not designed to represent the whole content of a
-	    document, they are more appropriate as an annotation on a
+	    document. They are more appropriate as an annotation on a
 	    previously structured text.
 	  </t>
 	</section>
@@ -186,23 +186,24 @@
 	       title="Alternative implementations">
 	<t>
 	  In this section we would like to explore some other possible
-	  implementations that, although not currently used by the most
-	  popular calendar applications, could theoretically converge
-	  into a standard.  We will talk briefly about the calendar mime
-	  type and RegisterContentHandler, data URI scheme and a custom
-	  URI scheme.
+	  implementations that, although not currently used by the
+	  most popular calendar applications, could theoretically
+	  converge into a standard.  We will talk briefly about the
+	  calendar mime type in combination with
+	  RegisterContentHandler, data URI scheme and a custom URI
+	  scheme.
 	</t>
 	<section anchor="section.mime"
-		 title="text/calendar MIME type and
+		 title="text/calendar MIME type in combination with
 			RegisterContentHandler">
 	  <t>
-	    One way to use iCal files and avoid downloading it would be
-	    registering a handler for calendar MIME <xref
+	    One way to use iCal files and avoid downloading it would
+	    be registering a handler for calendar MIME <xref
 	    target="RFC6838"/> types (text/calendar <xref
 	    target="RFC5545"/>).  Operating Systems know how to handle
-	    mime type properly, and would be able to redirect it to the
-	    right application. Web browsers, on the other hand, still
-	    have limited capability to handle it, the method
+	    mime type properly, and are able to redirect it to
+	    the right application. Web browsers, on the other hand,
+	    still have limited capability to handle it. The method
 	    RegisterContentHandler [RegisterContentHandler] allows to
 	    send a given mime type file directly to a website, but so
 	    far has only been implemented by Mozilla and only supports
@@ -219,7 +220,7 @@
 	    therefore they would still need to be downloaded or properly
 	    redirected to an application, and RegisterContentHandler
 	    would need to be implemented by browsers and QR readers
-	    before this approach can be used
+	    before this approach can be used.
 	  </t>
 	</section>
 	<section anchor="section.custom" title="Custom URI scheme">
@@ -244,8 +245,8 @@
       <t>
 	In this section we will propose a custom URI schema that could
 	be implemented easily by any calendar application and
-	developers alike, discuss some of its special requirements and
-	last provide some examples
+	developers alike. We will also discuss some of its special
+	requirements and provide several examples
       </t>
       <section anchor="section.syntax" title="Syntax">
 	<t>
@@ -263,7 +264,7 @@
 	  To be compatible with the generic URI syntax <xref
 	  target="RFC3986"/>, the whole URI needs to follow the
 	  percent encoding escaping. The iCalendar event can be either
-	  written as a escaped text or, if base64 is specified,
+	  written as an escaped text or, if base64 is specified,
 	  converted to base64. Calendar applications MUST recognize
 	  both formats to be compliant with this URI scheme
 	  
@@ -274,9 +275,9 @@
 	    <t> MUST be a valid entity as specified by RFC 5545 <xref
 	    target="RFC5545"/>, except for rules specified in this
 	    document that can violate the RFC specification</t>
-	    <t>Start and End dates MUST contain timezones, as described
-	    in section 3.8.2.2 and 3.8.2.4 of RFC 5545 <xref
-	    target="RFC5545"/></t>
+	    <t>Start and End dates MUST contain timezone through the
+	    TZID param, as described in section 3.8.2.2 and 3.8.2.4 of
+	    RFC 5545 <xref target="RFC5545"/></t>
 	    <t>Timezones MUST be specified using one of the valid
 	    names from the IANA timezone database (tz) <xref
 	    target="tz"/>. Also, VTIMEZONE entries MUST NOT be added
@@ -291,16 +292,17 @@
 	    contain extra information about the event contained in the
 	    calendar. If the source file and the entry contradict each
 	    other, the information presented in the source MUST
-	    prevail. If a source is available, the event contained in
+	    prevail. If the source is available, the event contained in
 	    the source file MUST have the same UID as the event
 	    expressed by the URI</t>
-	    <t>It MUST fit in the medium you're choosing to transmit
-	    it, For reference, URIs larger than 2048 characters are
-	    known to not work properly on all browsers, and QR codes
-	    have a hard limit of 2953 characters in its most
-	    permissive encoding. In practice, we recommend limiting
-	    the URI to 1024 characters and our tests have shown 500
-	    characters are usually enough for most common scenarios.</t>
+	    <t>The URI size MUST fit in the medium you're choosing to
+	    transmit it, For reference, URIs larger than 2048
+	    characters are known to not work properly on all browsers,
+	    and QR codes have a hard limit of 2953 characters in its
+	    most permissive encoding. In practice, we recommend
+	    limiting the URI to 1024 characters and our tests have
+	    shown 500 characters are usually enough for most common
+	    scenarios.</t>
 	    <t>LAST-MODIFIED field, as specified by section 3.8.7.3 of
 	    RFC 5545 <xref target="RFC5545"/> MUST be included to
 	    allow for changes to be detected by calendar handler
@@ -430,61 +432,6 @@
 	    </figure>
 	  </t>
 	</section>
-	<section anchor="section.recurring"
-		 title="Recurring instance with fragment
-			identifier">
-	  <t>
-	    In this example, we have a recurring event with a
-	    fragment identifier, and its corresponding URI. Note
-	    that this is the only way to specify a recurring event,
-	    since only one VEVENT is allowed in the URI. Exceptions
-	    and other information related to this recurring event
-	    MUST be added to the SOURCE link instead.
-	    <figure suppress-title="true">
-	      <artwork align="center">	
-		BEGIN:VCALENDAR
-		SOURCE:http://www.example.com/kirk.ics?recur-id:22330404T000000Z
-		BEGIN:VEVENT
-		SUMMARY:James T. Kirk's special birthday
-		DTSTART;TZID=US/Eastern:22330322T000000
-		DTEND;TZID=US/Eastern:22330322T235900
-		UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
-		RECURRENCE-ID;TZID=US/Eastern:22330322T000000
-		LAST-MODIFIED:20150401T000000Z
-		END:VEVENT
-		END:VCALENDAR
-	      </artwork>
-	    </figure>
-	    <figure suppress-title="true">
-	      <artwork align="center">
-		v-event:BEGIN%3AVCALENDAR%0ASOURCE%3Ahttp%3A%2F%2Fwww
-		.example.com%2Fkirk.ics%3Frecur-id%3A22330404T000000Z%0A
-		BEGIN%3AVEVENT%0ASUMMARY%3AJames%20T.%20Kirk%27s%20
-		special%20birthday%0ADTSTART%3BTZID%3DUS%2FEastern%3A
-		22330322T000000%0ADTEND%3BTZID%3DUS%2FEastern%3A22
-		330322T235900%0AUID%3A8726bc91-a168-4c42-9568-a0e7
-		d35724d6%40example.com%0ARECURRENCE-ID%3BTZID%3DUS
-		%2FEastern%3A22330322T000000%0ALAST-MODIFIED%3A2015
-		0401T000000Z%0AEND%3AVEVENT%0AEND%3AVCALENDAR%0A
-	      </artwork>
-	    </figure>
-	    <figure suppress-title="true">
-	      <artwork align="center">
-		v-event:base64,QkVHSU46VkNBTEVOREFSClNPVVJDRTpodHRwOi
-		8vd3d3LmV4YW1wbGUuY29tL2tpcmsuaWNzP3JlY3VyLWlkOjIy
-		MzMwNDA0VDAwMDAwMFoKQkVHSU46VkVWRU5UClNVTU1BU
-		lk6SmFtZXMgVC4gS2lyaydzIHNwZWNpYWwgYmlydGhkYXkKRF
-		RTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAw
-		CkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyMjMzMDMyMlQyMzU5
-		MDAKVUlEOjg3MjZiYzkxLWExNjgtNGM0Mi05NTY4LWEwZTdkM
-		zU3MjRkNkBleGFtcGxlLmNvbQpSRUNVUlJFTkNFLUlEO1RaSUQ9
-		VVMvRWFzdGVybjoyMjMzMDMyMlQwMDAwMDAKTEFTVC1NT0
-		RJRklFRDoyMDE1MDQwMVQwMDAwMDBaCkVORDpWRVZFTlQ
-		KRU5EOlZDQUxFTkRBUgo=
-	      </artwork>
-	    </figure>
-	  </t>
-	</section>
 	<section anchor="section.qr_examples" title="QR code
 						     examples">
 	  <t>
@@ -556,7 +503,7 @@
 	    rules apply:
 	    <list style="symbols">
 	      <t>An event MUST only be handled by a calendar
-	      application after an user performed an action, like
+	      application after an user performed an action, such as
 	      clicking on a link or scanning a QR code. Events
 	      published using the URI SHOULD NOT be added
 	      automatically.</t>
@@ -584,7 +531,7 @@
 	security and privacy issues.
 	<list style="symbols">
 	  <t>Whenever a SOURCE link is available, the application MUST
-	  ask the user whether he wants to follow the link, since
+	  ask the user whether to follow the link, since
 	  there may be costs associated with downloading data and the
 	  user may want to perform this operation in a different
 	  environment.</t>
@@ -596,10 +543,10 @@
 	  for his consent before performing any change in his
 	  calendar.</t>
 	  <t>Reading an v-event URI or following a SOURCE link and
-	  downloading a file may pose a security thread if some care
-	  is not taken. Particularly code reading these files should
-	  be careful to not get exposed to common security bugs like
-	  buffer overflows.</t>
+	  downloading a file may pose a security thread if not
+	  carefully handled. Particularly code reading these files
+	  should be careful to not get exposed to common security bugs
+	  like buffer overflows.</t>
 	  <t>A SOURCE link SHOULD not be used only as a tracking
 	  mechanism, if a link is provided there should be some extra
 	  information being provided by it or at least the possibility
