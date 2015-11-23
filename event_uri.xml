@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE rfc SYSTEM "rfc2629.dtd">
-<rfc docName="draft-menderico-v-event-uri" category="info">
+<rfc docName="draft-menderico-v-event-uri-00" category="info">
   <front>
     <title abbrev="v-event URI">
       v-event URI: An URI scheme for events.
@@ -53,7 +53,7 @@
 	<uri>http://www.google.com/</uri>
       </address>
     </author>
-    <date day="02" month="November" year="2015"/>
+    <date day="24" month="November" year="2015"/>
     <area>Internet</area>
     <keyword>Calendar</keyword>
     <keyword>iCal</keyword>
@@ -63,7 +63,7 @@
       <t>
 	This document defines the format of Uniform Resource
 	Identifiers (URIs) for calendar events, allowing users to add
-	these events to its calendar application from any source that
+	these events to their calendar application from any source that
 	defines them, like web sites and printed QR codes
       </t>
     </abstract>
@@ -72,70 +72,71 @@
     <section anchor="section.intro" title="Introduction">
       <t>
 	Calendar users currently often do not have the ability to
-	quickly perform an action, such as adding the event to your
-	default calendar app, when encountering event data on a webpage,
-	poster or mobile apps. In this sense events have fallen behind
-	other real world entities, like e-mail <xref
-	target="RFC6068"/> and geo coordinates <xref target="RFC5870"/>
-	which allow for performing actions in default apps when
-	encountering these entities anywhere. This recommendations
-	document addresses the problem by proposing best practices when
-	embedding and publishing calendar data. We believe that using a
-	standardized URI scheme for event publishing will make
-	populating of users’ calendars much simpler, will make
-	developers’ lives easier and will increase calendar apps usage
-	in general. A major benefit of URIs is not only allowing
-	creation on mobile devices but also sharing of events on
-      physical media (for example via QR codes).</t>
+	quickly add an event to theirdefault calendar app, when
+	encountering event data on a webpage, poster or mobile
+	apps. In this sense events have fallen behind other real world
+	entities, like e-mail <xref target="RFC6068"/> and geo
+	coordinates <xref target="RFC5870"/> which allow for
+	performing actions in default apps when encountering these
+	entities anywhere. This recommendations document addresses the
+	problem by proposing best practices when embedding and
+	publishing calendar data. We believe that using a standardized
+	URI scheme for event publishing will make populating of users’
+	calendars much simpler, will make developers’ lives easier and
+	will increase calendar apps usage in general. A major
+	additional benefit of URIs is sharing of events on physical
+	media (for example via QR codes) or via URL.</t>
     </section>
     <section anchor="section.motivation"
 	     title="Motivation and related work">
       <section anchor="section.current"
 	       title="Current event publishing practices">
 	<t>
-	  Due to lack of standardized way to add events to calendar
-	  apps many different ways to do this developed. We will
-	  briefly mention four common ways: using a download link,
-	  hCalendar embedding, using VEVENTs in QR codes and provider
-	  specific buttons.
+	  Many ways to add events to calendar apps have been developed
+	  due to the lack of standardization. While these solve the
+	  basic need of sharing events, it does so with limited reach,
+	  are harder to use and limit adoption by new providers. We
+	  will briefly mention four common ways: using a download
+	  link, hCalendar embedding, using VEVENTs in QR codes and
+	  provider specific buttons.
 	</t>
 	<section anchor="section.icalendar"
 		 title="Publish a link to an iCalendar file">
 	  <t>
-	    A simple way to publish an event is write the event
-	    information into an iCalendar <xref target="RFC5545"/>
-	    file and provide a link to the user for downloading it. In
-	    an ideal world, a user would click on the link pointing to
-	    a file, the browser would recognize this link as a
-	    calendar file and redirect it to the proper calendar
-	    application, which would display the event information to
-	    the user, allowing simple edit actions, and saving it to
-	    the calendar.
+	    A simple way to publish an event i sto share a link that
+	    points to an iCalendar <xref target="RFC5545"/> file and
+	    provide a link to the user for downloading it. In an ideal
+	    world, a user would click on the link pointing to a file,
+	    the browser would recognize this link as a calendar file
+	    and redirect it to the proper calendar application, which
+	    would display the event information to the user, allowing
+	    simple edit actions, and saving it to the calendar.
 	  </t>
+
 	  <t>
-	    Unfortunately, there are some roadblocks. Browsers may
-	    not recognize ICS files and calendar apps may not be
-	    registered to handle them.  Users end up forced to
-	    download ICS files and depending on their operating
-	    system they can either click on the file and get it
-	    handed over to their calendar app or they need to go
-	    to their calendar app and manually import the
-	    event. Downloading files also means we need
-	    support from the hosting entity, and sometimes this is
-	    either simply not available (for instance, some CMS
-	    hosts do not have in-place support for special types
-	    of files) or require special plug-ins.
-	  </t>
+	    There are many problems with this method. Files must be
+	    hosted in a server, which is not always feasible or easy,
+	    and need to be maintained separately from the web pages
+	    they are linked from. This poses unnecessary difficulty
+	    for blog and CMS users, especially when compared to
+	    linking to email addresses or other web pages.</t>
+
 	  <t>
-	    The last problem we will mention is about coupling of
-	    the file and the entity it represents. Currently the
-	    user needs to keep the event file and all the links
-	    and descriptions in the links about in sync
-	    (containing the same information). It would be
-	    preferable to have this information close
-	    together. Ideally the same tools used to generate a
-	    page could be used to assure a link and the text
-	    information being displayed are synchronized.
+	    Furthermore, ICS files might not be recognized by the
+	    browser or operating system, or the user might use a
+	    web-based calendar app instead of a native one. Files
+	    might also contain malware and pose additional risk, with
+	    some end users avoiding downloaded files altogether.</t>
+	  
+	  <t>
+	    One additional problem is coupling of the file and the
+	    entity it represents. Currently the user needs to manually
+	    keep the event file and all the links and descriptions
+	    with the same information in the links about in sync. It
+	    is preferable to have this information close
+	    together. Ideally the same tools used to generate a page
+	    could be used to assure a link and the text information
+	    being displayed are synchronized.
 	  </t>
 	</section>
 	<section anchor="section.qr_readers"
@@ -143,11 +144,16 @@
 	  <t>
 	    Several QR code readers (<xref target="ZXing"/><xref
 	    target="i-nigma"/>) support calendar events to be embedded
-	    in QR codes, but they have their own custom implementation,
-	    usually a single VEVENT iCalendar component. They work well
-	    on the mobile platform but rely on OS internals <xref
-	    target="CalendarContract"/> to add the event to the
-	    calendar.
+	    in QR codes, but they have their own non-standard
+	    implementation, usually a single VEVENT iCalendar
+	    component. They work well on the mobile platform but rely
+	    on OS internals <xref target="CalendarContract"/> to add
+	    the event to the calendar.
+	  </t>
+	  <t>
+	    While QR code does not dictate a format for calendar
+	    events, most readers implement the URI standard schemes
+	    and would benefit from this proposal.
 	  </t>
 	</section>
 	<section anchor="section.hcalendar" title="hCalendar">
@@ -155,8 +161,10 @@
 	    hCalendar <xref target="hCalendar"/> is a microformat for
 	    events that can be used to annotate a web page or another
 	    document and indicate to readers that an event is
-	    present. While microformats are useful for parsing, they are
-	    not as easy as clicking on a link to add an event. They
+	    present. While microformats are useful for parsing and
+	    styling, they are not meant to be used as links to an
+	    event and need to be used in conjunction with the external
+	    ICS file method or a proprietary browser extension. They
 	    usually require a complex interaction between the website
 	    and the calendar application to get it right. This also
 	    makes it not ideal for QR scanning, since the annotations
@@ -168,26 +176,28 @@
 	<section anchor="section.custom_link"
 		 title="Custom calendar application link">
 	  <t>
-	    Several calendar systems provide URL for event creation
-	    (<xref target="AddThisEvent"/><xref
+	    Several calendar systems provide a proprietary URL for
+	    event creation (<xref target="AddThisEvent"/><xref
 	    target="GoogleCalendar"/>). However, due to lack of
 	    standards, applications must implement and link to these
-	    separately. For a web site owner it means implementing all
-	    custom links individually and presenting them to the
-	    users. The users then needs to choose the one that will work
-	    for their calendar application. This consumes precious space
-	    on the page and requires understanding of several APIs,
-	    making it difficult for a developer that wants to just
-	    publish a simple event.
+	    separately. This burdens both content creators and web
+	    site users: content creators must maintain individual
+	    links for each calendar application provider, and end
+	    users must find and choose the appropriate one for their
+	    own case. This consumes precious space on the page and
+	    requires understanding of several APIs, making it
+	    difficult for a developer that wants to just publish a
+	    simple event. Furthermore, it's impossible to link to all
+	    calendar app providers, requiring a combination of this
+	    method with the ICS file hosting method.
 	  </t>
 	</section>
       </section>
       <section anchor="section.possible_impls"
 	       title="Alternative implementations">
 	<t>
-	  In this section we would like to explore some other possible
-	  implementations that, although not currently used by the
-	  most popular calendar applications, could theoretically
+	  Tthough not currently used by the most popular calendar
+	  applications, other implementations could theoretically
 	  converge into a standard.  We will talk briefly about the
 	  calendar mime type in combination with
 	  RegisterContentHandler, data URI scheme and a custom URI

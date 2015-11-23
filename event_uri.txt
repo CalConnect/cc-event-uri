@@ -15,9 +15,9 @@ Expires: May 5, 2016                                              Google
 Abstract
 
    This document defines the format of Uniform Resource Identifiers
-   (URIs) for calendar events, allowing users to add these events to its
-   calendar application from any source that defines them, like web
-   sites and printed QR codes
+   (URIs) for calendar events, allowing users to add these events to
+   their calendar application from any source that defines them, like
+   web sites and printed QR codes
 
 Status of This Memo
 
@@ -60,52 +60,52 @@ Internet-Draft                 v-event URI                 November 2015
 
 1.  Introduction
 
-   Calendar users currently often do not have the ability to quickly
-   perform an action, such as adding the event to your default calendar
-   app, when encountering event data on a webpage, poster or mobile
-   apps.  In this sense events have fallen behind other real world
-   entities, like e-mail [RFC6068] and geo coordinates [RFC5870] which
-   allow for performing actions in default apps when encountering these
-   entities anywhere.  This recommendations document addresses the
-   problem by proposing best practices when embedding and publishing
-   calendar data.  We believe that using a standardized URI scheme for
-   event publishing will make populating of users' calendars much
-   simpler, will make developers' lives easier and will increase
-   calendar apps usage in general.  A major benefit of URIs is not only
-   allowing creation on mobile devices but also sharing of events on
-   physical media (for example via QR codes).
+   Calendar users currently often do not have the ability to quickly add
+   an event to theirdefault calendar app, when encountering event data
+   on a webpage, poster or mobile apps.  In this sense events have
+   fallen behind other real world entities, like e-mail [RFC6068] and
+   geo coordinates [RFC5870] which allow for performing actions in
+   default apps when encountering these entities anywhere.  This
+   recommendations document addresses the problem by proposing best
+   practices when embedding and publishing calendar data.  We believe
+   that using a standardized URI scheme for event publishing will make
+   populating of users' calendars much simpler, will make developers'
+   lives easier and will increase calendar apps usage in general.  A
+   major additional benefit of URIs is sharing of events on physical
+   media (for example via QR codes) or via URL.
 
 2.  Motivation and related work
 
 2.1.  Current event publishing practices
 
-   Due to lack of standardized way to add events to calendar apps many
-   different ways to do this developed.  We will briefly mention four
-   common ways: using a download link, hCalendar embedding, using
-   VEVENTs in QR codes and provider specific buttons.
+   Many ways to add events to calendar apps have been developed due to
+   the lack of standardization.  While these solve the basic need of
+   sharing events, it does so with limited reach, are harder to use and
+   limit adoption by new providers.  We will briefly mention four common
+   ways: using a download link, hCalendar embedding, using VEVENTs in QR
+   codes and provider specific buttons.
 
 2.1.1.  Publish a link to an iCalendar file
 
-   A simple way to publish an event is write the event information into
-   an iCalendar [RFC5545] file and provide a link to the user for
+   A simple way to publish an event i sto share a link that points to an
+   iCalendar [RFC5545] file and provide a link to the user for
    downloading it.  In an ideal world, a user would click on the link
    pointing to a file, the browser would recognize this link as a
    calendar file and redirect it to the proper calendar application,
    which would display the event information to the user, allowing
    simple edit actions, and saving it to the calendar.
 
-   Unfortunately, there are some roadblocks.  Browsers may not recognize
-   ICS files and calendar apps may not be registered to handle them.
-   Users end up forced to download ICS files and depending on their
-   operating system they can either click on the file and get it handed
-   over to their calendar app or they need to go to their calendar app
-   and manually import the event.  Downloading files also means we need
-   support from the hosting entity, and sometimes this is either simply
-   not available (for instance, some CMS hosts do not have in-place
-   support for special types of files) or require special plug-ins.
+   There are many problems with this method.  Files must be hosted in a
+   server, which is not always feasible or easy, and need to be
+   maintained separately from the web pages they are linked from.  This
+   poses unnecessary difficulty for blog and CMS users, especially when
+   compared to linking to email addresses or other web pages.
 
-   The last problem we will mention is about coupling of the file and
-   the entity it represents.  Currently the user needs to keep the event
+   Furthermore, ICS files might not be recognized by the browser or
+   operating system, or the user might use a web-based calendar app
+   instead of a native one.  Files might also contain malware and pose
+   additional risk, with some end users avoiding downloaded files
+   altogether.
 
 
 
@@ -114,53 +114,53 @@ Menderico, et al.          Expires May 5, 2016                  [Page 2]
 Internet-Draft                 v-event URI                 November 2015
 
 
-   file and all the links and descriptions in the links about in sync
-   (containing the same information).  It would be preferable to have
-   this information close together.  Ideally the same tools used to
-   generate a page could be used to assure a link and the text
-   information being displayed are synchronized.
+   One additional problem is coupling of the file and the entity it
+   represents.  Currently the user needs to manually keep the event file
+   and all the links and descriptions with the same information in the
+   links about in sync.  It is preferable to have this information close
+   together.  Ideally the same tools used to generate a page could be
+   used to assure a link and the text information being displayed are
+   synchronized.
 
 2.1.2.  Current QR code implementations
 
    Several QR code readers ([ZXing][i-nigma]) support calendar events to
-   be embedded in QR codes, but they have their own custom
+   be embedded in QR codes, but they have their own non-standard
    implementation, usually a single VEVENT iCalendar component.  They
    work well on the mobile platform but rely on OS internals
    [CalendarContract] to add the event to the calendar.
+
+   While QR code does not dictate a format for calendar events, most
+   readers implement the URI standard schemes and would benefit from
+   this proposal.
 
 2.1.3.  hCalendar
 
    hCalendar [hCalendar] is a microformat for events that can be used to
    annotate a web page or another document and indicate to readers that
-   an event is present.  While microformats are useful for parsing, they
-   are not as easy as clicking on a link to add an event.  They usually
-   require a complex interaction between the website and the calendar
-   application to get it right.  This also makes it not ideal for QR
-   scanning, since the annotations were not designed to represent the
-   whole content of a document.  They are more appropriate as an
-   annotation on a previously structured text.
+   an event is present.  While microformats are useful for parsing and
+   styling, they are not meant to be used as links to an event and need
+   to be used in conjunction with the external ICS file method or a
+   proprietary browser extension.  They usually require a complex
+   interaction between the website and the calendar application to get
+   it right.  This also makes it not ideal for QR scanning, since the
+   annotations were not designed to represent the whole content of a
+   document.  They are more appropriate as an annotation on a previously
+   structured text.
 
 2.1.4.  Custom calendar application link
 
-   Several calendar systems provide URL for event creation
+   Several calendar systems provide a proprietary URL for event creation
    ([AddThisEvent][GoogleCalendar]).  However, due to lack of standards,
-   applications must implement and link to these separately.  For a web
-   site owner it means implementing all custom links individually and
-   presenting them to the users.  The users then needs to choose the one
-   that will work for their calendar application.  This consumes
-   precious space on the page and requires understanding of several
-   APIs, making it difficult for a developer that wants to just publish
-   a simple event.
-
-2.2.  Alternative implementations
-
-   In this section we would like to explore some other possible
-   implementations that, although not currently used by the most popular
-   calendar applications, could theoretically converge into a standard.
-   We will talk briefly about the calendar mime type in combination with
-   RegisterContentHandler, data URI scheme and a custom URI scheme.
-
-
+   applications must implement and link to these separately.  This
+   burdens both content creators and web site users: content creators
+   must maintain individual links for each calendar application
+   provider, and end users must find and choose the appropriate one for
+   their own case.  This consumes precious space on the page and
+   requires understanding of several APIs, making it difficult for a
+   developer that wants to just publish a simple event.  Furthermore,
+   it's impossible to link to all calendar app providers, requiring a
+   combination of this method with the ICS file hosting method.
 
 
 
@@ -169,6 +169,13 @@ Menderico, et al.          Expires May 5, 2016                  [Page 3]
 
 Internet-Draft                 v-event URI                 November 2015
 
+
+2.2.  Alternative implementations
+
+   Tthough not currently used by the most popular calendar applications,
+   other implementations could theoretically converge into a standard.
+   We will talk briefly about the calendar mime type in combination with
+   RegisterContentHandler, data URI scheme and a custom URI scheme.
 
 2.2.1.  text/calendar MIME type in combination with
         RegisterContentHandler
@@ -208,13 +215,6 @@ Internet-Draft                 v-event URI                 November 2015
    most Operating Systems and browsers support it and its associated
    APIs.
 
-3.  The v-event URI scheme
-
-   In this section we will propose a custom URI schema that could be
-   implemented easily by any calendar application and developers alike.
-   We will also discuss some of its special requirements and provide
-   several examples
-
 
 
 
@@ -225,6 +225,13 @@ Menderico, et al.          Expires May 5, 2016                  [Page 4]
 
 Internet-Draft                 v-event URI                 November 2015
 
+
+3.  The v-event URI scheme
+
+   In this section we will propose a custom URI schema that could be
+   implemented easily by any calendar application and developers alike.
+   We will also discuss some of its special requirements and provide
+   several examples
 
 3.1.  Syntax
 
@@ -267,13 +274,6 @@ Internet-Draft                 v-event URI                 November 2015
       information about the event contained in the calendar.  If the
       source file and the entry contradict each other, the information
       presented in the source MUST prevail.  If the source is available,
-      the event contained in the source file MUST have the same UID as
-      the event expressed by the URI
-
-   o  The URI size MUST fit in the medium you're choosing to transmit
-      it, For reference, URIs larger than 2048 characters are known to
-      not work properly on all browsers, and QR codes have a hard limit
-      of 2953 characters in its most permissive encoding.  In practice,
 
 
 
@@ -282,6 +282,13 @@ Menderico, et al.          Expires May 5, 2016                  [Page 5]
 Internet-Draft                 v-event URI                 November 2015
 
 
+      the event contained in the source file MUST have the same UID as
+      the event expressed by the URI
+
+   o  The URI size MUST fit in the medium you're choosing to transmit
+      it, For reference, URIs larger than 2048 characters are known to
+      not work properly on all browsers, and QR codes have a hard limit
+      of 2953 characters in its most permissive encoding.  In practice,
       we recommend limiting the URI to 1024 characters and our tests
       have shown 500 characters are usually enough for most common
       scenarios.
@@ -322,13 +329,6 @@ Internet-Draft                 v-event URI                 November 2015
    In this first example, we will start with a simple event that follows
    all the recommendations above.  This event starts on March 23rd,
    2233, at midnight and finishes at 11:59 PM at the same day, in
-   Eastern Time.  It has been last modified on April 1st, 2015.  From
-   these, we have the following icalendar event:
-
-
-
-
-
 
 
 
@@ -337,6 +337,9 @@ Menderico, et al.          Expires May 5, 2016                  [Page 6]
 
 Internet-Draft                 v-event URI                 November 2015
 
+
+   Eastern Time.  It has been last modified on April 1st, 2015.  From
+   these, we have the following icalendar event:
 
                    BEGIN:VCALENDAR
                    BEGIN:VEVENT
@@ -378,12 +381,9 @@ Internet-Draft                 v-event URI                 November 2015
    Section 3.3.1, we can add the source URL 'http://www.example.com/
    kirk.ics' and we would obtain the following URIs:
 
-                v-event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
-                %2Fkirk.ics%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY%3AJames%20T.%20Kirk%27
-                s%20birthday%0D%0ADTSTART%3BTZID%3DUS%2FEastern%3A22330322T000000%0D
-                %0ADTEND%3BTZID%3DUS%2FEastern%3A22330322T235900%0D%0AUID%3Af41cb1b
-                3-e071-425d-a200-5e1384a22758%40example.com%0D%0ALAST-MODIFIED%3A
-                20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
+
+
+
 
 
 
@@ -393,6 +393,13 @@ Menderico, et al.          Expires May 5, 2016                  [Page 7]
 
 Internet-Draft                 v-event URI                 November 2015
 
+
+                v-event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
+                %2Fkirk.ics%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY%3AJames%20T.%20Kirk%27
+                s%20birthday%0D%0ADTSTART%3BTZID%3DUS%2FEastern%3A22330322T000000%0D
+                %0ADTEND%3BTZID%3DUS%2FEastern%3A22330322T235900%0D%0AUID%3Af41cb1b
+                3-e071-425d-a200-5e1384a22758%40example.com%0D%0ALAST-MODIFIED%3A
+                20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
 
                 v-event:base64,QkVHSU46VkNBTEVOREFSDQpTT1VSQ0U6aHR0cDovL3d3dy5leGFtcGxlL
                 mNvbS9raXJrLmljcw0KQkVHSU46VkVWRU5UDQpTVU1NQVJZOkphbWVzIFQuIEtpcmsnc
@@ -436,13 +443,6 @@ Internet-Draft                 v-event URI                 November 2015
    publishers in regard to UID generation and the LAST-MODIFIED field,
    which are discussed in the following subsections.
 
-3.4.1.1.  UID generation
-
-   According to RFC 5545 [RFC5545], every event MUST be published with
-   an UID, so calendar applications can detect multiple occurrences of
-   it and remove them.  The UID MUST be a globally unique identifier,
-   and the system generating the event must guarantee it is unique.  The
-
 
 
 Menderico, et al.          Expires May 5, 2016                  [Page 8]
@@ -450,6 +450,12 @@ Menderico, et al.          Expires May 5, 2016                  [Page 8]
 Internet-Draft                 v-event URI                 November 2015
 
 
+3.4.1.1.  UID generation
+
+   According to RFC 5545 [RFC5545], every event MUST be published with
+   an UID, so calendar applications can detect multiple occurrences of
+   it and remove them.  The UID MUST be a globally unique identifier,
+   and the system generating the event must guarantee it is unique.  The
    recommended way is to generate an id that is internal to a given
    system (for instance, a database incremental id, an UUID, or
    something similar) and append the domain name or IP address at the
@@ -492,12 +498,6 @@ Internet-Draft                 v-event URI                 November 2015
       specified by reference (i.e., their ISO names, according to [tz])
       and any calendar application MUST understand these.
 
-4.  Security and privacy considerations
-
-   Below are some guidelines applications implementing v-event URI
-   generators and parsers need to follow in order to avoid security and
-   privacy issues.
-
 
 
 
@@ -505,6 +505,12 @@ Menderico, et al.          Expires May 5, 2016                  [Page 9]
 
 Internet-Draft                 v-event URI                 November 2015
 
+
+4.  Security and privacy considerations
+
+   Below are some guidelines applications implementing v-event URI
+   generators and parsers need to follow in order to avoid security and
+   privacy issues.
 
    o  Whenever a SOURCE link is available, the application MUST ask the
       user whether to follow the link, since there may be costs
@@ -547,12 +553,6 @@ Internet-Draft                 v-event URI                 November 2015
          is valid or not, and SHOULD implement parsers that detect
          inconsistencies.
 
-5.  Future work
-
-   As mentioned in section Section 2.2.2, the data URI scheme would be a
-   nice fit for providing an uniform format for specifying events in the
-   Web and printed media (QR and other formats), and we have only chosen
-   another method because data support is currently limited.
 
 
 
@@ -561,6 +561,13 @@ Menderico, et al.          Expires May 5, 2016                 [Page 10]
 
 Internet-Draft                 v-event URI                 November 2015
 
+
+5.  Future work
+
+   As mentioned in section Section 2.2.2, the data URI scheme would be a
+   nice fit for providing an uniform format for specifying events in the
+   Web and printed media (QR and other formats), and we have only chosen
+   another method because data support is currently limited.
 
    We plan to update this document with a data URI compatible format as
    soon as its support is more widespread, allowing it to be used by
@@ -603,13 +610,6 @@ Internet-Draft                 v-event URI                 November 2015
 
               Last checked in August 26, 2015
 
-   [GoogleCalendar]
-              Google Inc., "Google Calendar", April 2006, <
-              http://calendar.google.com>.
-
-              Last checked in August 26, 2015
-
-
 
 
 
@@ -617,6 +617,12 @@ Menderico, et al.          Expires May 5, 2016                 [Page 11]
 
 Internet-Draft                 v-event URI                 November 2015
 
+
+   [GoogleCalendar]
+              Google Inc., "Google Calendar", April 2006, <
+              http://calendar.google.com>.
+
+              Last checked in August 26, 2015
 
    [hCalendar]
               Celik, T. and B. Suda, "hCalendar Microformat", June 2005,
@@ -659,12 +665,6 @@ Internet-Draft                 v-event URI                 November 2015
               6838, DOI 10.17487/RFC6838, January 2013,
               <http://www.rfc-editor.org/info/rfc6838>.
 
-   [tz]       IANA, "Time Zone Database", 1986, <https://www.iana.org/
-              time-zones>.
-
-              Last checked in August 27, 2015
-
-
 
 
 
@@ -673,6 +673,11 @@ Menderico, et al.          Expires May 5, 2016                 [Page 12]
 
 Internet-Draft                 v-event URI                 November 2015
 
+
+   [tz]       IANA, "Time Zone Database", 1986, <https://www.iana.org/
+              time-zones>.
+
+              Last checked in August 27, 2015
 
    [RFC7595]  Thaler, D., Ed., Hansen, T., and T. Hardie, "Guidelines
               and Registration Procedures for URI Schemes", BCP 35, RFC
@@ -713,11 +718,6 @@ Authors' Addresses
 
    Email: lucka@google.com
    URI:   http://www.google.com/
-
-
-
-
-
 
 
 
