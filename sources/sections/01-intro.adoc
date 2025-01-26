@@ -1,0 +1,15 @@
+== Introduction
+
+Calendar users currently often do not have the ability to quickly add
+an event to their default calendar app, when encountering event data
+on a webpage, poster or mobile apps. In this sense events have
+fallen behind other real world entities, like e-mail <<RFC6068>> and
+geo coordinates <<RFC5870>> which allow for performing actions in
+default apps when encountering these entities anywhere. This
+recommendations document addresses the problem by proposing best
+practices when embedding and publishing calendar data. We believe
+that using a standardized URI scheme for event publishing will make
+populating of users' calendars much simpler, will make developers'
+lives easier and will increase calendar apps usage in general. A
+major additional benefit of URIs is sharing of events on physical
+media (for example via QR codes) or via URL.

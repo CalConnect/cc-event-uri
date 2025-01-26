@@ -1,0 +1,13 @@
+== Future work
+
+As mentioned in <<sec-2.2.2>>, the data URI scheme would be a
+nice fit for providing an uniform format for specifying events in the
+Web and printed media (QR and other formats), and we have only chosen
+another method because data support is currently limited.
+
+We plan to update this document with a data URI compatible format as
+soon as its support is more widespread, allowing it to be used by
+native applications, browser applications and physical media with the
+same support currently available for regular URIs. The format
+specified here is compatible with data URI and minimal changes would
+be needed to convert from one format to another.

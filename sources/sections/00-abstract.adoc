@@ -1,0 +1,7 @@
+[abstract]
+== Abstract
+
+This document defines the format of Uniform Resource Identifiers
+(URIs) for calendar events, allowing users to add these events to
+their calendar application from any source that defines them, like
+web sites and printed QR codes
