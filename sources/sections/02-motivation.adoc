@@ -1,0 +1,125 @@
+== Motivation and related work
+
+=== Current event publishing practices
+
+Many ways to add events to calendar apps have been developed due to
+the lack of standardization. While these solve the basic need of
+sharing events, it does so with limited reach, are harder to use and
+limit adoption by new providers. We will briefly mention four common
+ways: using a download link, `hCalendar` embedding, using ``VEVENT``s in QR
+codes and provider specific buttons.
+
+==== Publish a link to an iCalendar file
+
+A simple way to publish an event is to share a link that points to an
+iCalendar <<RFC5545>> file and provide a link to the user for
+downloading it. In an ideal world, a user would click on the link
+pointing to a file, the browser would recognize this link as a
+calendar file and redirect it to the proper calendar application,
+which would display the event information to the user, allowing
+simple edit actions, and saving it to the calendar.
+
+There are many problems with this method. Files must be hosted in a
+server, which is not always feasible or easy, and need to be
+maintained separately from the web pages they are linked from. This
+poses unnecessary difficulty for blog and CMS users, especially when
+compared to linking to email addresses or other web pages.
+
+Furthermore, ICS files might not be recognized by the browser or
+operating system, or the user might use a web-based calendar app
+instead of a native one. Files might also contain malware and pose
+additional risk, with some end users avoiding downloaded files
+altogether.
+
+One additional problem is coupling of the file and the entity it
+represents. Currently the user needs to manually keep the event file
+and all the links and descriptions with the same information in the
+links about in sync. It is preferable to have this information close
+together. Ideally the same tools used to generate a page could be
+used to assure a link and the text information being displayed are
+synchronized.
+
+==== Current QR code implementations
+
+Several QR code readers (<<ZXing>>, <<i-nigma>>) support calendar events to
+be embedded in QR codes, but they have their own non-standard
+implementation, usually a single `VEVENT` iCalendar component. They
+work well on the mobile platform but rely on OS internals
+<<CalendarContract>> to add the event to the calendar.
+
+While QR code does not dictate a format for calendar events, most
+readers implement the URI standard schemes and would benefit from
+this proposal.
+
+==== `hCalendar`
+
+`hCalendar` <<hCalendar>> is a microformat for events that can be used to
+annotate a web page or another document and indicate to readers that
+an event is present. While microformats are useful for parsing and
+styling, they are not meant to be used as links to an event and need
+to be used in conjunction with the external ICS file method or a
+proprietary browser extension. They usually require a complex
+interaction between the website and the calendar application to get
+it right. This also makes it not ideal for QR scanning, since the
+annotations were not designed to represent the whole content of a
+document. They are more appropriate as an annotation on a previously
+structured text.
+
+==== Custom calendar application link
+
+Several calendar systems provide a proprietary URL for event creation
+(<<AddThisEvent>>, <<GoogleCalendar>>). However, due to lack of standards,
+applications must implement and link to these separately. This
+burdens both content creators and web site users: content creators
+must maintain individual links for each calendar application
+provider, and end users must find and choose the appropriate one for
+their own case. This consumes precious space on the page and
+requires understanding of several APIs, making it difficult for a
+developer that wants to just publish a simple event. Furthermore,
+it's impossible to link to all calendar app providers, requiring a
+combination of this method with the ICS file hosting method.
+
+=== Alternative implementations
+
+Though not currently used by the most popular calendar applications,
+other implementations could theoretically converge into a standard.
+We will talk briefly about the calendar mime type in combination with
+`RegisterContentHandler`, data URI scheme and a custom URI scheme.
+
+==== `text/calendar` MIME type in combination with `RegisterContentHandler`
+
+One way to use iCal files and avoid downloading it would be
+registering a handler for calendar MIME <<RFC6838>> types
+(`text/calendar` <<RFC5545>>). Operating Systems know how to handle mime type
+properly, and are able to redirect it to the right application. Web
+browsers, on the other hand, still have limited capability to handle
+it. The method `RegisterContentHandler`
+allows to send a given mime type file directly to a website, but so
+far has only been implemented by Mozilla and only supports `atom/xml`
+MIME type.
+
+[[sec-2.2.2]]
+==== `data` URI
+
+Data URIs <<RFC2397>> can be used to replace an external file in an
+HTML. One advantage is that it gets embedded into the HTML and
+removes the need of an external file, either a real file or emulated.
+Unfortunately, browsers treat these the same way they treat files,
+therefore they would still need to be downloaded or properly
+redirected to an application, and `RegisterContentHandler` would need
+to be implemented by browsers and QR readers before this approach can
+be used.
+
+==== Custom URI scheme
+
+A custom URI scheme for events would behave similar to e-mail
+<<RFC6068>> geo <<RFC5870>> and other schemes, where the resource
+(e-mail, geo, or in this case, the event) is properly identified and
+follows a specified protocol. An HTML page could publish an event
+using this scheme (as it would with any other link format) or a print
+page could embed it in an 2D-barcode. The user would have several
+options of handling it: opening his application of choice, or
+redirecting to a previously registered website
+`RegisterProtocolHandler`. Support for URI schemes is widespread,
+most Operating Systems and browsers support it and its associated
+APIs.

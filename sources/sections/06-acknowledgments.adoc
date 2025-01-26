@@ -1,0 +1,5 @@
+== Acknowledgments
+
+The authors would like to thank the members of CalConnect TC-EVENTPUB
+committee for its contributions to this document, particularly Dave
+Thewlis, Cyrus Daboo and Thomas Schaefer.

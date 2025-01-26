@@ -1,0 +1,41 @@
+[bibliography]
+== References
+
+* [[[AddThisEvent,1]]], "AddThisEvent", 2012, http://addthisevent.com. Last checked in August 26, 2015.
+
+* [[[CalConnect,2]]], "CalConnect: The Calendaring and Scheduling
+Consortium", January 2004, http://calconnect.org. Last checked in November 1, 2015.
+
+* [[[CalendarContract,3]]], Google Inc., "Android Calendar Contract", October 2011,
+http://developer.android.com/reference/android/provider/CalendarContract.html. Last checked in August 26, 2015.
+
+* [[[CalDavExtensions,IETF I-D draft-ietf-calext-extensions-00]]]
+
+* [[[GoogleCalendar,5]]], Google Inc., "Google Calendar", April 2006,
+http://calendar.google.com. Last checked in August 26, 2015.
+
+* [[[hCalendar,6]]], Celik, T. and B. Suda, "hCalendar Microformat", June 2005,
+http://microformats.org/wiki/hcalendar. Last checked in July 27, 2015.
+
+* [[[i-nigma,7]]], 3GVision, "i-nigma", August 2015. Last checked in August 27, 2015.
+
+* [[[RFC2397,RFC 2397]]]
+
+* [[[RFC3986, RFC 3986]]]
+
+* [[[RFC4122, RFC 4122]]]
+
+* [[[RFC5545, RFC 5545]]]
+
+* [[[RFC5870, RFC 5870]]]
+
+* [[[RFC6068, RFC 6068]]]
+
+* [[[RFC6838, RFC 6838]]]
+
+* [[[tz,15]]], IANA, "Time Zone Database", 1986, https://www.iana.org/
+time-zones. Last checked in August 27, 2015.
+
+* [[[RFC7595, RFC 7595]]]
+
+* [[[ZXing, 17]]], Owen, S., "ZXing Project", November 2007. Last checked in July 27, 2015.

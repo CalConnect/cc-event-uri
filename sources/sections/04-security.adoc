@@ -1,0 +1,46 @@
+== Security and privacy considerations
+
+Below are some guidelines applications implementing v-event URI
+generators and parsers need to follow in order to avoid security and
+privacy issues.
+
+* Whenever a `SOURCE` link is available, the application `MUST` ask the
+user whether to follow the link, since there may be costs
+associated with downloading data and the user may want to perform
+this operation in a different environment.
+
+* Calendar applications `MAY` check a `SOURCE` link periodically to
+check for changes, but `MUST NOT` update an event automatically
+based on new information provided by the user. If new information
+is available through the `SOURCE` link, calendar applications `SHOULD`
+inform the user and ask for his consent before performing any
+change in his calendar.
+
+* Reading an v-event URI or following a `SOURCE` link and downloading
+a file may pose a security thread if not carefully handled.
+Particularly code reading these files should be careful to not get
+exposed to common security bugs like buffer overflows.
+
+* A `SOURCE` link `SHOULD` not be used only as a tracking mechanism, if
+a link is provided there should be some extra information being
+provided by it or at least the possibility that the information
+will be updated if necessary
+
+* A `SOURCE` link `MUST` not require a calendar account in any calendar
+manager, and `MUST NOT` represent any form of event subscription by
+a particular system. Any event subscription action `REQUIRES` user
+acknowledgment and approval before being performed.
+
+* Note that there is no hard limit on the size of a `SOURCE` file, but
+it is expected that these contain information only about a single
+event (i.e., one `VEVENT`) or recurring event (several ``VEVENT``s with
+the same `RECURRENCE-ID`) This has implications for both writers and
+readers of these source files:
+
+* Writers `MUST` always provided well-formed data that complies to
+this document and, more generally, to iCalendar format
+<<RFC5545>>.
+
+* Readers can't rely on the size of an input to decide whether it
+is valid or not, and `SHOULD` implement parsers that detect
+inconsistencies.

@@ -1,0 +1,253 @@
+== The v-event URI scheme
+
+In this section we will propose a custom URI schema that could be
+implemented easily by any calendar application and developers alike.
+We will also discuss some of its special requirements and provide
+several examples
+
+=== Syntax
+
+The v-event URI scheme syntax is based on both iCalendar <<RFC5545>>
+and data URI scheme <<RFC2397>>, we intend to make it trivial for
+people used to iCalendar syntax to implement this scheme, and also
+make it consistent with other existing URI formats. The basic syntax
+for the URI is:
+
+`v-event:[base64,] icalendar event`
+
+To be compatible with the generic URI syntax <<RFC3986>>, the whole URI
+needs to follow the percent encoding escaping. The iCalendar event
+can be either written as an escaped text or, if base64 is specified,
+converted to base64. Calendar applications `MUST` recognize both
+formats to be compliant with this URI scheme For the iCalendar the
+following restrictions apply:
+
+* Exactly one entity in the `VCALENDAR` (`VEVENT` / `VTODO`) must be
+specified.
+
+* `MUST` be a valid entity as specified by <<RFC5545>>, except
+for rules specified in this document that can violate the RFC
+specification.
+
+* Start and End dates `MUST` contain timezone through the `TZID` param,
+as described <<RFC5545,section=3.8.2.2;and!RFC5545,section=3.8.2.4>>.
+
+* Timezones `MUST` be specified using one of the valid names from the
+IANA timezone database (`tz`) <<tz>>. Also, `VTIMEZONE` entries
+`MUST NOT` be added to the v-event URI or to the source files. All
+calendar applications reading events will recognize these names
+(see <<sec-3.4.2>> for more details).
+
+* The event `MUST` contain a UID, as specified by
+<<RFC5545,section=3.8.4.7>>.
+
+* The `VCALENDAR` object `MAY` contain a `SOURCE` field
+<<CalDavExtensions>>, pointing to an ICS file that can contain extra
+information about the event contained in the calendar. If the
+source file and the entry contradict each other, the information
+presented in the source `MUST` prevail. If the source is available,
+the event contained in the source file `MUST` have the same UID as
+the event expressed by the URI.
+
+* The URI size `MUST` fit in the medium you're choosing to transmit
+it, For reference, URIs larger than 2048 characters are known to
+not work properly on all browsers, and QR codes have a hard limit
+of 2953 characters in its most permissive encoding. In practice,
+we recommend limiting the URI to 1024 characters and our tests
+have shown 500 characters are usually enough for most common
+scenarios.
+
+* `LAST-MODIFIED` field, as specified by
+<<RFC5545,section=3.8.7.3>> `MUST`
+be included to allow for changes to be detected by
+calendar handler applications.
+
+=== URI Registration
+
+The v-event URI will be registered with IANA as a provisional scheme,
+to allow all calendar applications to use it. The authors are not
+pursuing a permanent registration because they believe that this
+scheme may be deprecated in the future in favor of a DATA URI scheme,
+when browser implementations support that scheme with the same level
+regular URIs are supported.
+
+The following are the fields required by <<RFC7595>>
+
+* Scheme name: v-event
+
+* Status: provisional
+
+* Applications/protocols that use this scheme name: Hypertext (for
+example, web pages, e-mail. QR code readers), calendar
+applications.
+
+* Contact: Raphael Menderico (menderico@google.com)
+
+* Change Controller: <<CalConnect>>
+
+* References: this document, plus references in it
+
+=== Examples
+
+[[sec-3.3.1]]
+==== V-Event URI 101 - a simple example
+
+In this first example, we will start with a simple event that follows
+all the recommendations above. This event starts on March 23rd,
+2233, at midnight and finishes at 11:59 PM at the same day, in
+Eastern Time. It has been last modified on April 1st, 2015. From
+these, we have the following icalendar event:
+
+[source%unnumbered]
+----
+BEGIN:VCALENDAR
+  BEGIN:VEVENT
+    SUMMARY:James T. Kirk's birthday
+    DTSTART;TZID=US/Eastern:22330322T000000
+    DTEND;TZID=US/Eastern:22330322T235900
+    UID:8726bc91-a168-4c42-9568-a0e7d35724d6@example.com
+    LAST-MODIFIED:20150401T000000Z
+  END:VEVENT
+END:VCALENDAR
+----
+
+which leads to the v-event URI:
+
+[source%unnumbered]
+----
+v-event:BEGIN%3AVCALENDAR%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY
+%3AJames%20T.%20Kirk%27s%20birthday%0D%0ADTSTART%3BTZID%3DUS
+%2FEastern%3A22330322T000000%0D%0ADTEND%3BTZID%3DUS%2F
+Eastern%3A22330322T235900%0D%0AUID%3A8726bc91-a168-4c42-
+9568-a0e7d35724d6%40example.com%0D%0ALAST-MODIFIED%3A
+20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
+----
+
+[[sec-3.3.2]]
+==== Base 64 encoding
+
+As mentioned before, calendar applications also need to be able to
+interpret base64 versions of the URIs, the example below represents
+the same event described in <<sec-3.3.1>>:
+
+[source%unnumbered]
+----
+v-event:base64,QkVHSU46VkNBTEVOREFSDQpCRUdJTjpWRVZFTlQNClNVTU1BU
+lk6SmFtZXMgVC4gS2lyaydzIGJpcnRoZGF5DQpEVFNUQVJUO1RaSUQ9VVMvRWF
+zdGVybjoyMjMzMDMyMlQwMDAwMDANCkRURU5EO1RaSUQ9VVMvRWFzdGVybjoyM
+jMzMDMyMlQyMzU5MDANClVJRDo4NzI2YmM5MS1hMTY4LTRjNDItOTU2OC1hMGU
+3ZDM1NzI0ZDZAZXhhbXBsZS5jb20NCkxBU1QtTU9ESUZJRUQ6MjAxNTA0MDFUM
+DAwMDAwWg0KRU5EOlZFVkVOVA0KRU5EOlZDQUxFTkRBUg==
+----
+
+==== Source link
+
+A source link should be added if the URI cannot fit all information
+about a given event or for any other reason you believe that an ICS
+file may better suit your needs. For the same example in
+<<sec-3.3.1>>, we can add the source URL
+'http://www.example.com/kirk.ics' and we would obtain the following URIs:
+
+[source%unnumbered]
+----
+v-event:BEGIN%3AVCALENDAR%0D%0ASOURCE%3Ahttp%3A%2F%2Fwww.example.com
+%2Fkirk.ics%0D%0ABEGIN%3AVEVENT%0D%0ASUMMARY%3AJames%20T.%20Kirk%27
+s%20birthday%0D%0ADTSTART%3BTZID%3DUS%2FEastern%3A22330322T000000%0D
+%0ADTEND%3BTZID%3DUS%2FEastern%3A22330322T235900%0D%0AUID%3Af41cb1b
+3-e071-425d-a200-5e1384a22758%40example.com%0D%0ALAST-MODIFIED%3A
+20150401T000000Z%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR
+
+v-event:base64,QkVHSU46VkNBTEVOREFSDQpTT1VSQ0U6aHR0cDovL3d3dy5leGFtcGxlL
+mNvbS9raXJrLmljcw0KQkVHSU46VkVWRU5UDQpTVU1NQVJZOkphbWVzIFQuIEtpcmsnc
+yBiaXJ0aGRheQ0KRFRTVEFSVDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMDAwMDAwD
+QpEVEVORDtUWklEPVVTL0Vhc3Rlcm46MjIzMzAzMjJUMjM1OTAwDQpVSUQ6ZjQxY2Ix
+YjMtZTA3MS00MjVkLWEyMDAtNWUxMzg0YTIyNzU4QGV4YW1wbGUuY29tDQpMQVNU
+LU1PRElGSUVEOjIwMTUwNDAxVDAwMDAwMFoNCkVORDpWRVZFTlQNCkVORDpWQ0
+FMRU5EQVI=
+----
+
+The iCal object in this case would be:
+
+[source%unnumbered]
+----
+BEGIN:VCALENDAR
+  SOURCE:http://www.example.com/kirk.ics
+  BEGIN:VEVENT
+    SUMMARY:James T. Kirk's birthday
+    DTSTART;TZID=US/Eastern:22330322T000000
+    DTEND;TZID=US/Eastern:22330322T235900
+    UID:f41cb1b3-e071-425d-a200-5e1384a22758@example.com
+    LAST-MODIFIED:20150401T000000Z
+  END:VEVENT
+END:VCALENDAR
+----
+
+==== QR code examples
+
+A QR code containing the first example (<<sec-3.3.1>>) can be found
+at https://goo.gl/lQXIwP. It has been generated using the ZXing
+barcode generator(<<ZXing>>).
+
+=== Application requirements and best practices
+
+==== Event publisher
+
+For event publishers, the following extra requirements must me met:
+
+* If your entry contains a `SOURCE` field pointing to an URI, the
+publisher is responsible for keeping the link live and with up-to-
+date information while the event information is relevant (i.e, the
+link must exist until the event expires).
+
+There are also some best practices that need to be followed by these
+publishers in regard to UID generation and the `LAST-MODIFIED` field,
+which are discussed in the following subsections.
+
+===== UID generation
+
+According to <<RFC5545>>, every event MUST be published with
+an UID, so calendar applications can detect multiple occurrences of
+it and remove them. The UID `MUST` be a globally unique identifier,
+and the system generating the event must guarantee it is unique. The
+recommended way is to generate an id that is internal to a given
+system (for instance, a database incremental id, an UUID, or
+something similar) and append the domain name or IP address at the
+end, separating them by an @.
+
+For example, all these are valid unique ids for domain example.com
+that fit this recommendation and also <<RFC5545>>:
+
+* [`1@example.com`]: a simple numerical id, useful if you are creating
+your first event and has no intention to create another or can
+manage the ids manually.
+
+* [`user-29960401T080000Z-1@example.com`]: An UID for an event from
+user 'user' that starts April first, 2996, at 8:00 AM, and uses
+the username and date as keys.
+
+* [`f47935ee-ec5e-4d87-ba26-05e970674a88@example.com`]: a UID which
+uses UUIDs based on <<RFC4122>>. Theoretically, UUIDs are
+themselves unique, but to conform with the recommendation we also
+appended the domain name.
+
+[[sec-3.4.2]]
+==== Calendar applications requirements
+
+For calendar data handlers, the following set of extra rules apply:
+
+* An event `MUST` only be handled by a calendar application after an
+user performed an action, such as clicking on a link or scanning a
+QR code. Events published using the URI `SHOULD NOT` be added
+automatically.
+
+* Calendar data handlers `MUST` retain sufficient information to
+determine that an event has changed so that it can inform the
+user.
+
+* If a user deletes a previously downloaded event the handler should
+recognize that and ignore the event unless explicitly clicked on.
+
+* A calendar application must keep its timezone database always up-
+to-date and adjust events accordingly. Timezones will be
+specified by reference (i.e., their ISO names, according to <<tz>>)
+and any calendar application `MUST` understand these.
