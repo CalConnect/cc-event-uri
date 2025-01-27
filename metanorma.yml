@@ -1,0 +1,10 @@
+---
+metanorma:
+  source:
+    files:
+    - sources/cc-51015.adoc
+    - sources/draft-menderico-v-event-uri.adoc
+
+  collection:
+    organization: CalConnect
+    name: "v-event URI: An URI scheme for events"

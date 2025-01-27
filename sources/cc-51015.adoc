@@ -1,14 +1,7 @@
-= v-event URI: An URI scheme for events
-:doctype: internet-draft
-:docnumber: draft-menderico-v-event-uri
-:status: informational
-:ipr: trust200902
-:consensus: true
-:submission-type: IETF
-:area: Internet
-:intended-series: full-standard
-:revdate: 2015-11-02
+= CalConnect Standard: v-event URI: An URI scheme for events
+:title: Calendaring and scheduling -- v-event URI: An URI scheme for events
 :fullname: Raphael Menderico
+:firstname: Raphael
 :lastname: Menderico
 :forename_initials: R.
 :organization: Google Inc.
@@ -20,6 +13,7 @@
 :uri: http://www.google.com/
 :email: menderico@google.com
 :fullname_2: Paulo Schlup
+:firstname_2: Paulo
 :lastname_2: Schlup
 :forename_initials_2: P.
 :organization_2: Google Inc.
@@ -31,6 +25,7 @@
 :uri_2: http://www.google.com/
 :email_2: pschlup@google.com
 :fullname_3: Lucia Kristiansen
+:firstname_3: Lucia
 :lastname_3: Kristiansen
 :forename_initials_3: L.
 :organization_3: Google Inc.
@@ -41,10 +36,21 @@
 :country_3: Switzerland
 :uri_3: http://www.google.com/
 :email_3: lucka@google.com
-:mn-document-class: ietf
-:mn-output-extensions: rfc,xml,txt,html,rxl
+:docnumber: 51015
+:copyright-year: 2015
+:language: en
+:doctype: standard
+:edition: 1
+:status: committee-draft
+:revdate: 2015-11-02
+:published-date: 2015-11-02
+:script: Latn
 :technical-committee: EVENTPUB
-:workgroup:
+:imagesdir: images
+:mn-document-class: cc
+:mn-output-extensions: xml,html,pdf,rxl
+:local-cache-only:
+:data-uri-image:
 
 include::sections/00-abstract.adoc[]
 

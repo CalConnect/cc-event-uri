@@ -1,0 +1,10 @@
+.DS_Store
+.swp
+.tmp.xml
+relaton/
+iev/
+Gemfile.lock
+*.abort
+*.err
+*.err.html
+
