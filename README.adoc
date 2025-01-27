@@ -1,0 +1,97 @@
+= CalConnect Standard: v-event URI: An URI scheme for events
+
+This work item belongs to TC EVENTPUB.
+
+image:https://github.com/CalConnect/cc-event-uri/actions/workflows/generate.yml/badge.svg["Build Status", link="https://github.com/CalConnect/cc-event-uri/actions/workflows/generate.yml"]
+
+This document is available in its rendered forms here:
+
+* https://calconnect.github.io/cc-event-uri/[CalConnect+IETF: Calendaring and scheduling -- v-event URI: An URI scheme for events]
+
+== General
+
+This document specifies an URI scheme for events, which can be used to
+reference events in a standard way across different platforms and
+applications. The scheme is designed to be easy to use and to be
+compatible with existing calendaring standards.
+
+The document is published as the following:
+
+* CalConnect CC 51015
+* IETF draft-menderico-v-event-uri
+
+
+== Structure
+
+`sources/`::
+source of documents.
+
+`sources/cc-51015.adoc`::
+CalConnect CC 51015 standard.
+
+`sources/draft-menderico-v-event-uri.adoc`::
+IETF draft-menderico-v-event-uri, dual-published from CC 51015.
+
+`_site/`::
+(automatically generated using `metanorma site generate`) published document.
+
+
+== Fetching the document
+
+[source,sh]
+----
+git clone https://github.com/CalConnect/cc-event-uri/
+----
+
+
+== Installing build tools
+
+See https://www.metanorma.org/install/
+
+
+== Running via Docker or locally
+
+If you have installed the build tools locally, and wish to run the
+locally-installed compilation tools, there is nothing further to set.
+
+If you don't want to deal with local dependencies, use the docker:
+
+[source,sh]
+----
+docker run -v "$(pwd)":/metanorma -w /metanorma -it metanorma/mn metanorma site generate --agree-to-terms
+----
+
+
+== Building the document
+
+[source,sh]
+----
+metanorma site generate --agree-to-terms
+----
+
+The generated documents are accessible under `_site/`.
+
+
+== Iterating the document
+
+[source,sh]
+----
+metanorma site generate --agree-to-terms
+open _site/index.html
+----
+
+
+== IETF: Checking against idnits
+
+https://tools.ietf.org/tools/idnits/[idnits] is the RFC checking tool prior to
+submissions.
+
+[source,sh]
+----
+idnits draft-menderico-v-event-uri.nits
+----
+
+
+== License
+
+Copyright its respective authors and CalConnect.
