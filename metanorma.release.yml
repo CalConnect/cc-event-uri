@@ -1,3 +1,5 @@
+# metanorma.release.yml — cc-event-uri
+
 documents:
-  - source: sources/cc-51015.adoc
-  - source: sources/draft-menderico-v-event-uri.adoc
+  - pattern: "cc-*"
+    channels: [public/standards]

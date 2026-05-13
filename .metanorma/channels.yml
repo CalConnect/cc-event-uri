@@ -1,0 +1,5 @@
+# .metanorma/channels.yml — cc-event-uri
+
+channels:
+  - name: public/standards
+    description: "CalConnect documents from cc-event-uri"
